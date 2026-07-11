@@ -182,3 +182,218 @@
     font-size: 0.875rem;
     font-weight: 500;
 }
+
+/* RSVP form — mobile UX */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+#rsvp {
+    scroll-margin-top: 5rem;
+}
+
+.rsvp-form {
+    scroll-margin-top: 5rem;
+    touch-action: manipulation;
+}
+
+.rsvp-form input,
+.rsvp-form textarea,
+.rsvp-form button {
+    touch-action: manipulation;
+}
+
+.rsvp-form input,
+.rsvp-form textarea {
+    font-size: 16px;
+}
+
+.rsvp-form .rsvp-attending-btn {
+    min-height: 5.5rem;
+}
+
+.rsvp-guest-count-section {
+    overflow: hidden;
+    max-height: 12rem;
+    opacity: 1;
+    transition: max-height 0.28s ease, opacity 0.22s ease, margin 0.28s ease;
+}
+
+.rsvp-guest-count-section.is-collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0 !important;
+    pointer-events: none;
+}
+
+.rsvp-status-slot {
+    min-height: 0;
+}
+
+.rsvp-status-slot:not(:empty) {
+    margin-top: -0.25rem;
+}
+
+@media (max-width: 639px) {
+    #rsvp h2 {
+        font-size: clamp(2.25rem, 9vw, 3rem);
+    }
+
+    .rsvp-form {
+        border-radius: 1.25rem;
+    }
+
+    .rsvp-form .rsvp-attending-btn p.font-heading {
+        font-size: 1.25rem;
+    }
+
+    .rsvp-form [data-testid="rsvp-submit"] {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Admin dashboard — responsive layout */
+.admin-toolbar-actions select,
+.admin-toolbar-actions button {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .admin-toolbar-actions select,
+    .admin-toolbar-actions button {
+        width: auto;
+    }
+}
+
+.admin-table-wrap {
+    display: none;
+}
+
+.admin-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.admin-card {
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-top: 1px solid rgba(31, 29, 27, 0.1);
+}
+
+.admin-card:first-child {
+    border-top: none;
+}
+
+.admin-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.admin-card-name {
+    font-family: inherit;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.admin-card-meta {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.admin-card-row {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, 7rem) minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+}
+
+.admin-card-label {
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5c564f;
+}
+
+.admin-card-value {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.admin-card-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.admin-table-scroll-hint {
+    display: none;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5c564f;
+    background: #f9f6f0;
+    border-bottom: 1px solid rgba(31, 29, 27, 0.08);
+}
+
+@media (min-width: 1024px) {
+    .admin-cards {
+        display: none;
+    }
+
+    .admin-table-wrap {
+        display: block;
+    }
+
+    .admin-table {
+        min-width: 960px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .admin-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-table-scroll-hint {
+        display: block;
+    }
+
+    .admin-table-wrap {
+        display: block;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-cards {
+        display: none;
+    }
+
+    .admin-table {
+        min-width: 880px;
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-cards {
+        display: flex;
+    }
+
+    .admin-table-wrap {
+        display: none;
+    }
+}

@@ -54,6 +54,7 @@ function renderStats(stats) {
 
 function renderTable(rows, filter) {
   const tbody = document.getElementById('admin-table-body');
+  const cards = document.getElementById('admin-cards');
   const empty = document.getElementById('admin-empty');
   if (!tbody || !empty) return;
 
@@ -65,6 +66,7 @@ function renderTable(rows, filter) {
 
   if (!filtered.length) {
     tbody.innerHTML = '';
+    if (cards) cards.innerHTML = '';
     empty.classList.remove('hidden');
     return;
   }
@@ -101,6 +103,54 @@ function renderTable(rows, filter) {
       `
     )
     .join('');
+
+  if (cards) {
+    cards.innerHTML = filtered
+      .map(
+        (row) => `
+          <article class="admin-card">
+            <div class="admin-card-header">
+              <p class="admin-card-name">${escapeHtml(row.name)}</p>
+              <span class="inline-flex shrink-0 px-3 py-1 rounded-full nb-border text-xs font-mono-nb uppercase tracking-[0.2em] ${
+                row.attending === 'yes' ? 'bg-[#C1D5C9]' : 'bg-[#F5E3B8]'
+              }">
+                ${row.attending === 'yes' ? 'Coming' : 'Declined'}
+              </span>
+            </div>
+            <div class="admin-card-meta">
+              <div class="admin-card-row">
+                <p class="admin-card-label">Email</p>
+                <p class="admin-card-value font-mono-nb text-sm">${escapeHtml(row.email)}</p>
+              </div>
+              <div class="admin-card-row">
+                <p class="admin-card-label">Guests</p>
+                <p class="admin-card-value font-heading text-xl">${row.attending === 'yes' ? row.guest_count : '—'}</p>
+              </div>
+              <div class="admin-card-row">
+                <p class="admin-card-label">Message</p>
+                <p class="admin-card-value text-[#5C564F]">${row.message ? escapeHtml(row.message) : '—'}</p>
+              </div>
+              <div class="admin-card-row">
+                <p class="admin-card-label">Submitted</p>
+                <p class="admin-card-value font-mono-nb text-xs text-[#5C564F]">${formatDate(row.created_at)}</p>
+              </div>
+            </div>
+            <div class="admin-card-actions">
+              <button
+                type="button"
+                class="admin-delete-btn"
+                data-rsvp-delete
+                data-rsvp-id="${row.id}"
+                data-rsvp-name="${escapeHtml(row.name)}"
+              >
+                Delete
+              </button>
+            </div>
+          </article>
+        `
+      )
+      .join('');
+  }
 }
 
 function showLoginError(message) {
@@ -223,7 +273,10 @@ async function initAdmin() {
     await refreshDashboard();
   });
 
-  document.getElementById('admin-table-body')?.addEventListener('click', async (event) => {
+  document.getElementById('admin-table-body')?.addEventListener('click', handleDeleteClick);
+  document.getElementById('admin-cards')?.addEventListener('click', handleDeleteClick);
+
+  async function handleDeleteClick(event) {
     const button = event.target.closest('[data-rsvp-delete]');
     if (!button) return;
 
@@ -245,7 +298,7 @@ async function initAdmin() {
       showDashboardError(error.message || 'Could not delete this RSVP.');
       button.disabled = false;
     }
-  });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initAdmin);

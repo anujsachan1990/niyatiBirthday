@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>RSVP Admin · Niyati Turns One</title>
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/styles.css">
@@ -13,7 +13,7 @@
 
 <body class="bg-[#F9F6F0] text-[#1F1D1B] min-h-screen">
     <header class="border-b border-[#1F1D1B]/10">
-        <div class="max-w-[1400px] mx-auto px-6 md:px-10 py-6 flex items-center justify-between gap-4">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <p class="font-mono-nb text-[11px] uppercase tracking-[0.28em] text-[#5C564F]">Private dashboard</p>
                 <h1 class="font-heading text-3xl md:text-4xl mt-1">RSVP responses</h1>
@@ -25,7 +25,7 @@
         </div>
     </header>
 
-    <main class="max-w-[1400px] mx-auto px-6 md:px-10 py-10">
+    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 py-8 sm:py-10">
         <section id="admin-login" class="max-w-md mx-auto nb-border rounded-2xl bg-white p-8 md:p-10 nb-shadow-lg">
             <p class="font-mono-nb text-[11px] uppercase tracking-[0.28em] text-[#5C564F]">Admin sign in</p>
             <h2 class="font-heading text-3xl mt-2">Who is coming?</h2>
@@ -55,12 +55,12 @@
         </section>
 
         <section id="admin-dashboard" class="admin-dashboard hidden">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="admin-toolbar flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
                     <p class="font-mono-nb text-[11px] uppercase tracking-[0.28em] text-[#5C564F]">Live summary</p>
-                    <h2 class="font-heading text-3xl mt-1">Guest overview</h2>
+                    <h2 class="font-heading text-2xl sm:text-3xl mt-1">Guest overview</h2>
                 </div>
-                <div class="flex flex-wrap items-center gap-3">
+                <div class="admin-toolbar-actions flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
                     <label for="admin-filter" class="font-mono-nb text-[11px] uppercase tracking-[0.28em]">Filter</label>
                     <select id="admin-filter"
                         class="nb-border rounded-full bg-white px-4 py-2 font-mono-nb text-xs uppercase tracking-[0.2em]">
@@ -84,7 +84,9 @@
             <p id="admin-dashboard-error" class="hidden font-mono-nb text-xs uppercase tracking-[0.2em] text-red-600 font-semibold"></p>
 
             <div class="admin-table-panel nb-border rounded-2xl bg-white overflow-hidden nb-shadow-lg">
-                <div class="overflow-x-auto">
+                <div id="admin-cards" class="admin-cards"></div>
+                <p class="admin-table-scroll-hint">Swipe sideways to see all columns</p>
+                <div class="admin-table-wrap overflow-x-auto">
                     <table class="admin-table w-full text-left">
                         <thead class="bg-[#F9F6F0]">
                             <tr>

@@ -36,7 +36,7 @@ function initRSVPForm() {
     });
 
     if (guestCountSection) {
-      guestCountSection.classList.toggle('hidden', value === 'no');
+      guestCountSection.classList.toggle('is-collapsed', value === 'no');
     }
 
     if (value === 'no') {
@@ -59,14 +59,18 @@ function initRSVPForm() {
   }
 
   function showStatus(message, type) {
-    let status = form.querySelector('[data-testid="rsvp-status"]');
-    if (!status) {
+    const slot = form.querySelector('[data-testid="rsvp-status-slot"]');
+    let status = slot?.querySelector('[data-testid="rsvp-status"]');
+
+    if (!status && slot) {
       status = document.createElement('div');
       status.setAttribute('data-testid', 'rsvp-status');
       status.setAttribute('role', 'status');
       status.setAttribute('aria-live', 'polite');
-      submitButton.parentNode.insertBefore(status, submitButton);
+      slot.appendChild(status);
     }
+
+    if (!status) return;
 
     status.textContent = message;
     status.className = 'rsvp-status';

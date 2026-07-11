@@ -142,6 +142,10 @@ function initCountdown() {
 // 4. FLOATING BALLOON ANIMATIONS
 // ============================================
 function initFloatingAnimations() {
+  if (window.matchMedia('(max-width: 1023px), (prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
   // Target balloon SVG containers in the hero section
   const balloonContainers = document.querySelectorAll('#hero svg[viewBox="0 0 90 112"]');
   
@@ -270,6 +274,10 @@ function initImageRotations() {
 // 8. PARALLAX EFFECT ON SCROLL
 // ============================================
 function initParallax() {
+  if (window.matchMedia('(max-width: 1023px), (prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
   const decorations = document.querySelectorAll('[class*="absolute"]');
   
   window.addEventListener('scroll', () => {
@@ -308,7 +316,7 @@ function initRSVPButtons() {
       if (testId.includes('rsvp')) {
         const rsvpSection = document.getElementById('rsvp');
         if (rsvpSection) {
-          rsvpSection.scrollIntoView({ behavior: 'smooth' });
+          rsvpSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       } else if (testId.includes('details')) {
         // Scroll to details section
