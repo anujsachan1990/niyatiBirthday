@@ -170,43 +170,56 @@ function initMobileFormFocus(form) {
 
   const header = document.querySelector('header');
   let activeField = null;
+  let alignTimer = null;
+  let isAligning = false;
 
-  function getHeaderOffset() {
-    return (header?.offsetHeight || 72) + 12;
+  function getScrollTarget(field) {
+    return field.closest('.rsvp-field') || field;
   }
 
-  function scrollFieldIntoView(field) {
-    if (!field || !mobileQuery.matches) return;
+  function getVisibleTop() {
+    const viewport = window.visualViewport;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const headerHeight = header?.getBoundingClientRect().height ?? 72;
+    return viewportTop + headerHeight + 12;
+  }
 
-    const runScroll = () => {
-      const viewport = window.visualViewport;
-      const viewportHeight = viewport?.height ?? window.innerHeight;
-      const viewportTop = viewport?.offsetTop ?? 0;
-      const headerOffset = getHeaderOffset();
-      const padding = 20;
+  function getVisibleBottom() {
+    const viewport = window.visualViewport;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const viewportHeight = viewport?.height ?? window.innerHeight;
+    return viewportTop + viewportHeight - 20;
+  }
 
-      const rect = field.getBoundingClientRect();
-      const visibleTop = headerOffset;
-      const visibleBottom = viewportTop + viewportHeight - padding;
+  function alignField(field) {
+    if (!field || !mobileQuery.matches || isAligning) return;
 
-      let delta = 0;
+    const target = getScrollTarget(field);
+    const rect = target.getBoundingClientRect();
+    const visibleTop = getVisibleTop();
+    const visibleBottom = getVisibleBottom();
+    const targetTop = Math.min(visibleTop, visibleBottom - rect.height - 12);
 
-      if (rect.top < visibleTop) {
-        delta = rect.top - visibleTop;
-      } else if (rect.bottom > visibleBottom) {
-        delta = rect.bottom - visibleBottom;
-      }
+    const delta = rect.top - targetTop;
+    if (Math.abs(delta) < 6) return;
 
-      if (delta !== 0) {
-        window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
-      }
-    };
+    isAligning = true;
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + delta),
+      left: 0,
+      behavior: 'auto',
+    });
 
     window.requestAnimationFrame(() => {
-      runScroll();
-      window.setTimeout(runScroll, 120);
-      window.setTimeout(runScroll, 320);
+      isAligning = false;
     });
+  }
+
+  function scheduleAlign(field) {
+    if (!field) return;
+    window.clearTimeout(alignTimer);
+    window.requestAnimationFrame(() => alignField(field));
+    alignTimer = window.setTimeout(() => alignField(field), 320);
   }
 
   function setKeyboardOpen(isOpen) {
@@ -216,12 +229,12 @@ function initMobileFormFocus(form) {
   form.addEventListener(
     'focusin',
     (event) => {
-      const field = event.target.closest('input, textarea');
+      const field = event.target.closest('input:not([type="hidden"]), textarea');
       if (!field || !form.contains(field)) return;
 
       activeField = field;
       setKeyboardOpen(true);
-      scrollFieldIntoView(field);
+      scheduleAlign(field);
     },
     true
   );
@@ -230,31 +243,35 @@ function initMobileFormFocus(form) {
     'focusout',
     (event) => {
       const next = event.relatedTarget;
-      if (next && form.contains(next) && next.matches('input, textarea')) {
+      if (
+        next &&
+        form.contains(next) &&
+        next.matches('input:not([type="hidden"]), textarea')
+      ) {
         return;
       }
 
       window.setTimeout(() => {
-        if (document.activeElement && form.contains(document.activeElement)) {
+        const active = document.activeElement;
+        if (
+          active &&
+          form.contains(active) &&
+          active.matches('input:not([type="hidden"]), textarea')
+        ) {
           return;
         }
 
         activeField = null;
         setKeyboardOpen(false);
-      }, 80);
+        window.clearTimeout(alignTimer);
+      }, 120);
     },
     true
   );
 
   window.visualViewport?.addEventListener('resize', () => {
     if (activeField) {
-      scrollFieldIntoView(activeField);
-    }
-  });
-
-  window.visualViewport?.addEventListener('scroll', () => {
-    if (activeField) {
-      scrollFieldIntoView(activeField);
+      scheduleAlign(activeField);
     }
   });
 
@@ -262,6 +279,7 @@ function initMobileFormFocus(form) {
     if (!mobileQuery.matches) {
       setKeyboardOpen(false);
       activeField = null;
+      window.clearTimeout(alignTimer);
     }
   });
 }

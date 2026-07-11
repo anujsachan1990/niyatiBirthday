@@ -190,7 +190,12 @@
 
 html {
     -webkit-text-size-adjust: 100%;
-    scroll-padding-top: var(--rsvp-header-offset);
+}
+
+@media (min-width: 768px) {
+    html {
+        scroll-padding-top: var(--rsvp-header-offset);
+    }
 }
 
 body {
@@ -237,8 +242,7 @@ body {
 }
 
 .rsvp-field {
-    scroll-margin-top: calc(var(--rsvp-header-offset) + 0.75rem);
-    scroll-margin-bottom: 1.5rem;
+    overflow-anchor: none;
 }
 
 .rsvp-label {
@@ -323,6 +327,10 @@ body {
 
 body.rsvp-keyboard-open {
     scroll-behavior: auto;
+}
+
+body.rsvp-keyboard-open #rsvp {
+    padding-bottom: min(42vh, 18rem);
 }
 
 body.rsvp-keyboard-open .rsvp-form {
