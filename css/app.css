@@ -300,6 +300,18 @@ body {
     box-shadow: 0 0 0 3px rgba(193, 213, 201, 0.9);
 }
 
+@media (max-width: 767px) {
+    .rsvp-input:focus,
+    .rsvp-textarea:focus {
+        scroll-margin-top: calc(var(--rsvp-header-offset) + 0.5rem);
+        scroll-margin-bottom: min(50vh, 22rem);
+    }
+
+    body.rsvp-input-active #rsvp {
+        padding-bottom: min(55vh, 24rem);
+    }
+}
+
 .rsvp-textarea {
     min-height: 6.75rem;
     resize: none;
