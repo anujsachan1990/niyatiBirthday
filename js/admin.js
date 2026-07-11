@@ -74,8 +74,8 @@ function renderTable(rows, filter) {
     .map(
       (row) => `
         <tr class="border-t border-[#1F1D1B]/10">
-          <td class="px-4 py-4 font-body">${row.name}</td>
-          <td class="px-4 py-4 font-mono-nb text-sm">${row.email}</td>
+          <td class="px-4 py-4 font-body">${escapeHtml(row.name)}</td>
+          <td class="px-4 py-4 font-mono-nb text-sm">${escapeHtml(row.email)}</td>
           <td class="px-4 py-4">
             <span class="inline-flex px-3 py-1 rounded-full nb-border text-xs font-mono-nb uppercase tracking-[0.2em] ${
               row.attending === 'yes' ? 'bg-[#C1D5C9]' : 'bg-[#F5E3B8]'
@@ -84,7 +84,7 @@ function renderTable(rows, filter) {
             </span>
           </td>
           <td class="px-4 py-4 font-heading text-xl text-center">${row.attending === 'yes' ? row.guest_count : '—'}</td>
-          <td class="px-4 py-4 font-body text-sm text-[#5C564F] max-w-xs">${row.message || '—'}</td>
+          <td class="px-4 py-4 font-body text-sm text-[#5C564F] max-w-xs">${row.message ? escapeHtml(row.message) : '—'}</td>
           <td class="px-4 py-4 font-mono-nb text-xs text-[#5C564F] whitespace-nowrap">${formatDate(row.created_at)}</td>
           <td class="px-4 py-4 text-center">
             <button
@@ -103,6 +103,13 @@ function renderTable(rows, filter) {
     .join('');
 }
 
+function showLoginError(message) {
+  const error = document.getElementById('admin-login-error');
+  if (!error) return;
+  error.textContent = message;
+  error.classList.remove('hidden');
+}
+
 function showLogin() {
   document.getElementById('admin-login')?.classList.remove('hidden');
   document.getElementById('admin-dashboard')?.classList.add('hidden');
@@ -113,11 +120,26 @@ function showDashboard() {
   document.getElementById('admin-dashboard')?.classList.remove('hidden');
 }
 
-function showLoginError(message) {
-  const error = document.getElementById('admin-login-error');
+function showDashboardError(message) {
+  const error = document.getElementById('admin-dashboard-error');
   if (!error) return;
   error.textContent = message;
   error.classList.remove('hidden');
+}
+
+function hideDashboardError() {
+  document.getElementById('admin-dashboard-error')?.classList.add('hidden');
+}
+
+async function deleteRsvp(supabase, id) {
+  const { data, error } = await supabase.from('rsvps').delete().eq('id', id).select('id');
+
+  if (error) throw error;
+  if (!data?.length) {
+    throw new Error('Delete was blocked. Make sure the admin delete policy is enabled in Supabase.');
+  }
+
+  return data[0];
 }
 
 async function loadRsvps(supabase, filter = 'all') {
@@ -151,6 +173,7 @@ async function initAdmin() {
 
   async function refreshDashboard() {
     try {
+      hideDashboardError();
       await loadRsvps(supabase, currentFilter);
     } catch (error) {
       console.error('Failed to load RSVPs:', error);
@@ -215,12 +238,11 @@ async function initAdmin() {
     button.disabled = true;
 
     try {
-      const { error } = await supabase.from('rsvps').delete().eq('id', id);
-      if (error) throw error;
+      await deleteRsvp(supabase, id);
       await refreshDashboard();
     } catch (error) {
       console.error('Failed to delete RSVP:', error);
-      window.alert('Could not delete this RSVP. Check Supabase delete permissions.');
+      showDashboardError(error.message || 'Could not delete this RSVP.');
       button.disabled = false;
     }
   });
