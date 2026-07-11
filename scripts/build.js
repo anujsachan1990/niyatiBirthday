@@ -35,6 +35,28 @@ function escapeJsString(value) {
   return value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
+function getSiteOrigin() {
+  const siteUrl =
+    process.env.SITE_URL ||
+    process.env.URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '');
+
+  return siteUrl.replace(/\/$/, '');
+}
+
+function injectSiteOrigin(html) {
+  const origin = getSiteOrigin();
+
+  if (!origin) {
+    console.warn(
+      'SITE_URL not set — Open Graph image URLs may not preview correctly when shared. Set SITE_URL in your host env vars.'
+    );
+    return html.replace(/__SITE_ORIGIN__/g, '');
+  }
+
+  return html.replace(/__SITE_ORIGIN__/g, origin);
+}
+
 function writeConfig(dest, url, key) {
   const content = [
     '// Generated at build time — do not edit in dist/',
@@ -86,6 +108,8 @@ if (process.argv.includes('--clean')) {
 removeDir(dist);
 fs.mkdirSync(dist, { recursive: true });
 
+loadEnvFile();
+
 for (const target of copyTargets) {
   const src = path.join(root, target);
   if (!fs.existsSync(src)) {
@@ -95,7 +119,12 @@ for (const target of copyTargets) {
   copyItem(src, path.join(dist, target));
 }
 
-loadEnvFile();
+const indexSrc = path.join(root, 'index.html');
+const indexDest = path.join(dist, 'index.html');
+if (fs.existsSync(indexSrc)) {
+  const html = injectSiteOrigin(fs.readFileSync(indexSrc, 'utf8'));
+  fs.writeFileSync(indexDest, html);
+}
 
 const configSrc = path.join(root, 'js', 'config.js');
 const configExampleSrc = path.join(root, 'js', 'config.example.js');
