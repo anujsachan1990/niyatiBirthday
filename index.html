@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
     <meta name="theme-color" content="#000000">
     <!--
         manifest.json provides metadata used when your web app is installed on a
@@ -725,10 +725,10 @@
                     class="relative py-16 sm:py-24 md:py-32 bg-[#1F1D1B] text-[#F9F6F0] overflow-x-hidden" x-file-name="RSVPForm"
                     x-line-number="54" x-column="4" x-component="section" x-id="RSVPForm_54_4" x-dynamic="true"
                     x-source-type="computed" x-source-editable="false">
-                    <div class="max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
+                    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
                         x-file-name="RSVPForm" x-line-number="65" x-column="6" x-component="div" x-id="RSVPForm_65_6"
                         x-dynamic="false">
-                        <div class="lg:col-span-5 lg:sticky lg:top-32" x-file-name="RSVPForm" x-line-number="66"
+                        <div class="rsvp-intro lg:col-span-5 lg:sticky lg:top-32 order-2 lg:order-1" x-file-name="RSVPForm" x-line-number="66"
                             x-column="8" x-component="div" x-id="RSVPForm_66_8" x-dynamic="false">
                             <p class="font-mono-nb text-xs uppercase tracking-[0.28em] text-[#C1D5C9]"
                                 x-file-name="RSVPForm" x-line-number="67" x-column="10" x-component="p"
@@ -744,7 +744,7 @@
                                     x-column="27" x-component="span" x-id="RSVPForm_74_27" x-dynamic="false">JAN 15,
                                     2026</span> so we can make sure there's cake, a chair, and a hug waiting for you.
                             </p>
-                            <div class="mt-10 nb-border rounded-2xl p-6 bg-[#2A2A2A]" x-file-name="RSVPForm"
+                            <div class="rsvp-intro-note mt-8 lg:mt-10 nb-border rounded-2xl p-5 sm:p-6 bg-[#2A2A2A]" x-file-name="RSVPForm"
                                 x-line-number="77" x-column="10" x-component="div" x-id="RSVPForm_77_10"
                                 x-dynamic="false">
                                 <div class="flex items-center gap-3 font-mono-nb text-[11px] uppercase tracking-[0.28em] text-[#F5E3B8]"
@@ -765,59 +765,59 @@
                                     and we can't wait to share this one with you."</p>
                             </div>
                         </div>
-                        <div class="lg:col-span-7" x-file-name="RSVPForm" x-line-number="88" x-column="8"
+                        <div class="rsvp-form-wrap lg:col-span-7 order-1 lg:order-2" x-file-name="RSVPForm" x-line-number="88" x-column="8"
                             x-component="div" x-id="RSVPForm_88_8" x-dynamic="false">
                             <form data-testid="rsvp-form"
                                 class="rsvp-form nb-border rounded-2xl bg-[#F9F6F0] text-[#1F1D1B] p-5 sm:p-8 md:p-10 nb-shadow-lg space-y-5 sm:space-y-6"
                                 x-file-name="RSVPForm" x-line-number="122" x-column="14" x-component="form"
                                 x-id="RSVPForm_122_14" x-dynamic="true" x-source-type="computed"
                                 x-source-editable="false" style="opacity: 1; transform: none;">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" x-file-name="RSVPForm"
+                                <div class="grid grid-cols-1 gap-5 sm:gap-6" x-file-name="RSVPForm"
                                     x-line-number="131" x-column="16" x-component="div" x-id="RSVPForm_131_16"
                                     x-dynamic="false">
-                                    <div x-file-name="RSVPForm" x-line-number="132" x-column="18" x-component="div"
+                                    <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="132" x-column="18" x-component="div"
                                         x-id="RSVPForm_132_18" x-dynamic="true" x-source-type="computed"
                                         x-source-editable="false"><label
-                                            class="font-mono-nb text-[11px] uppercase tracking-[0.28em]"
+                                            class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]"
                                             x-file-name="RSVPForm" x-line-number="133" x-column="20" x-component="label"
                                             x-id="RSVPForm_133_20" x-dynamic="false">Your name</label><input
-                                            data-testid="rsvp-name" placeholder="Ava Sharma"
-                                            class="mt-2 w-full nb-border rounded-xl bg-white px-4 py-3 font-body text-lg focus:outline-none focus:nb-shadow-sm"
+                                            data-testid="rsvp-name" placeholder="Ava Sharma" autocomplete="name"
+                                            class="rsvp-input mt-2 w-full nb-border rounded-xl bg-white px-4 py-3.5 font-body focus:outline-none focus:ring-2 focus:ring-[#C1D5C9] focus:ring-offset-1"
                                             x-file-name="RSVPForm" x-line-number="134" x-column="20" x-component="input"
                                             x-id="RSVPForm_134_20" x-dynamic="false" value=""></div>
-                                    <div x-file-name="RSVPForm" x-line-number="143" x-column="18" x-component="div"
+                                    <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="143" x-column="18" x-component="div"
                                         x-id="RSVPForm_143_18" x-dynamic="true" x-source-type="computed"
                                         x-source-editable="false"><label
-                                            class="font-mono-nb text-[11px] uppercase tracking-[0.28em]"
+                                            class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]"
                                             x-file-name="RSVPForm" x-line-number="144" x-column="20" x-component="label"
                                             x-id="RSVPForm_144_20" x-dynamic="false">Email</label><input
-                                            data-testid="rsvp-email" placeholder="you@example.com"
-                                            class="mt-2 w-full nb-border rounded-xl bg-white px-4 py-3 font-body text-lg focus:outline-none focus:nb-shadow-sm"
+                                            data-testid="rsvp-email" placeholder="you@example.com" autocomplete="email" inputmode="email"
+                                            class="rsvp-input mt-2 w-full nb-border rounded-xl bg-white px-4 py-3.5 font-body focus:outline-none focus:ring-2 focus:ring-[#C1D5C9] focus:ring-offset-1"
                                             x-file-name="RSVPForm" x-line-number="145" x-column="20" x-component="input"
                                             x-id="RSVPForm_145_20" x-dynamic="false" type="email" value=""></div>
                                 </div>
-                                <div x-file-name="RSVPForm" x-line-number="157" x-column="16" x-component="div"
+                                <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="157" x-column="16" x-component="div"
                                     x-id="RSVPForm_157_16" x-dynamic="false"><label
-                                        class="font-mono-nb text-[11px] uppercase tracking-[0.28em]"
+                                        class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]"
                                         x-file-name="RSVPForm" x-line-number="158" x-column="18" x-component="label"
                                         x-id="RSVPForm_158_18" x-dynamic="false">Will you attend?</label>
-                                    <div class="mt-3 grid grid-cols-2 gap-3" x-file-name="RSVPForm" x-line-number="159"
+                                    <div class="rsvp-attending-grid mt-3 grid grid-cols-1 gap-3" x-file-name="RSVPForm" x-line-number="159"
                                         x-column="18" x-component="div" x-id="RSVPForm_159_18" x-dynamic="false"><button
                                             type="button" data-testid="rsvp-attending-yes"
-                                            class="rsvp-attending-btn nb-border rounded-xl px-4 py-4 text-left transition-colors bg-[#C1D5C9] nb-shadow"
+                                            class="rsvp-attending-btn nb-border rounded-xl px-4 py-3.5 sm:py-4 text-left transition-colors bg-[#C1D5C9] nb-shadow"
                                             x-file-name="RSVPForm" x-line-number="160" x-column="20"
                                             x-component="button" x-id="RSVPForm_160_20" x-dynamic="false">
-                                            <p class="font-heading text-2xl" x-file-name="RSVPForm" x-line-number="166"
+                                            <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="166"
                                                 x-column="22" x-component="p" x-id="RSVPForm_166_22" x-dynamic="false">
                                                 Yes, joyfully</p>
                                             <p class="font-mono-nb text-[10px] uppercase tracking-[0.28em] mt-1 text-[#5C564F]"
                                                 x-file-name="RSVPForm" x-line-number="167" x-column="22" x-component="p"
                                                 x-id="RSVPForm_167_22" x-dynamic="false">Save my seat</p>
                                         </button><button type="button" data-testid="rsvp-attending-no"
-                                            class="rsvp-attending-btn nb-border rounded-xl px-4 py-4 text-left transition-colors bg-white hover:bg-[#F5E3B8]/60"
+                                            class="rsvp-attending-btn nb-border rounded-xl px-4 py-3.5 sm:py-4 text-left transition-colors bg-white hover:bg-[#F5E3B8]/60"
                                             x-file-name="RSVPForm" x-line-number="169" x-column="20"
                                             x-component="button" x-id="RSVPForm_169_20" x-dynamic="false">
-                                            <p class="font-heading text-2xl" x-file-name="RSVPForm" x-line-number="175"
+                                            <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="175"
                                                 x-column="22" x-component="p" x-id="RSVPForm_175_22" x-dynamic="false">
                                                 Regretfully no</p>
                                             <p class="font-mono-nb text-[10px] uppercase tracking-[0.28em] mt-1 text-[#5C564F]"
@@ -825,17 +825,17 @@
                                                 x-id="RSVPForm_176_22" x-dynamic="false">Missing you already</p>
                                         </button></div>
                                 </div>
-                                <div data-testid="rsvp-guest-count-section" class="rsvp-guest-count-section" x-file-name="RSVPForm" x-line-number="182" x-column="18" x-component="div"
+                                <div data-testid="rsvp-guest-count-section" class="rsvp-field rsvp-guest-count-section" x-file-name="RSVPForm" x-line-number="182" x-column="18" x-component="div"
                                     x-id="RSVPForm_182_18" x-dynamic="false"><label
-                                        class="font-mono-nb text-[11px] uppercase tracking-[0.28em]"
+                                        class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]"
                                         x-file-name="RSVPForm" x-line-number="183" x-column="20" x-component="label"
                                         x-id="RSVPForm_183_20" x-dynamic="false">Number of guests (including
                                         you)</label>
-                                    <div class="mt-3 flex flex-wrap gap-2" x-file-name="RSVPForm" x-line-number="186"
+                                    <div class="rsvp-guest-grid mt-3 grid grid-cols-4 gap-2 sm:flex sm:flex-wrap sm:gap-2" x-file-name="RSVPForm" x-line-number="186"
                                         x-column="20" x-component="div" x-id="RSVPForm_186_20" x-dynamic="true"
                                         x-source-type="computed" x-source-editable="false"><button type="button"
                                             data-testid="rsvp-guest-count-option-1"
-                                            class="w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-[#1F1D1B] text-[#F9F6F0]"
+                                            class="rsvp-guest-btn w-full sm:w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-[#1F1D1B] text-[#F9F6F0]"
                                             x-file-name="RSVPForm" x-line-number="188" x-column="24"
                                             x-component="button" x-id="RSVPForm_188_24" x-dynamic="true"
                                             x-source-type="static-local"
@@ -846,7 +846,7 @@
                                             x-array-line="187" x-array-item-param="n"
                                             x-array-inline="true">1</button><button type="button"
                                             data-testid="rsvp-guest-count-option-2"
-                                            class="w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
+                                            class="rsvp-guest-btn w-full sm:w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
                                             x-file-name="RSVPForm" x-line-number="188" x-column="24"
                                             x-component="button" x-id="RSVPForm_188_24" x-dynamic="true"
                                             x-source-type="static-local"
@@ -857,7 +857,7 @@
                                             x-array-line="187" x-array-item-param="n"
                                             x-array-inline="true">2</button><button type="button"
                                             data-testid="rsvp-guest-count-option-3"
-                                            class="w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
+                                            class="rsvp-guest-btn w-full sm:w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
                                             x-file-name="RSVPForm" x-line-number="188" x-column="24"
                                             x-component="button" x-id="RSVPForm_188_24" x-dynamic="true"
                                             x-source-type="static-local"
@@ -868,7 +868,7 @@
                                             x-array-line="187" x-array-item-param="n"
                                             x-array-inline="true">3</button><button type="button"
                                             data-testid="rsvp-guest-count-option-4"
-                                            class="w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
+                                            class="rsvp-guest-btn w-full sm:w-12 h-12 nb-border rounded-full font-heading text-xl transition-colors bg-white hover:bg-[#F5E3B8]"
                                             x-file-name="RSVPForm" x-line-number="188" x-column="24"
                                             x-component="button" x-id="RSVPForm_188_24" x-dynamic="true"
                                             x-source-type="static-local"
@@ -882,14 +882,14 @@
                                         x-line-number="199" x-column="20" x-component="input" x-id="RSVPForm_199_20"
                                         x-dynamic="false" type="hidden" value="1">
                                 </div>
-                                <div x-file-name="RSVPForm" x-line-number="203" x-column="16" x-component="div"
+                                <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="203" x-column="16" x-component="div"
                                     x-id="RSVPForm_203_16" x-dynamic="false"><label
-                                        class="font-mono-nb text-[11px] uppercase tracking-[0.28em]"
+                                        class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]"
                                         x-file-name="RSVPForm" x-line-number="204" x-column="18" x-component="label"
                                         x-id="RSVPForm_204_18" x-dynamic="false">A note for Niyati
-                                        (optional)</label><textarea data-testid="rsvp-message" rows="4"
+                                        (optional)</label><textarea data-testid="rsvp-message" rows="3"
                                         placeholder="Write a little wish, blessing or memory..."
-                                        class="mt-2 w-full nb-border rounded-xl bg-white px-4 py-3 font-body text-lg focus:outline-none focus:nb-shadow-sm resize-none"
+                                        class="rsvp-input mt-2 w-full nb-border rounded-xl bg-white px-4 py-3.5 font-body focus:outline-none focus:ring-2 focus:ring-[#C1D5C9] focus:ring-offset-1 resize-none min-h-[6.5rem] sm:min-h-[7.5rem]"
                                         x-file-name="RSVPForm" x-line-number="207" x-column="18" x-component="textarea"
                                         x-id="RSVPForm_207_18" x-dynamic="false"></textarea></div>
                                 <div data-testid="rsvp-status-slot" class="rsvp-status-slot" aria-live="polite"></div>

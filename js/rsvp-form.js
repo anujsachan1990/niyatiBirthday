@@ -2,6 +2,8 @@ function initRSVPForm() {
   const form = document.querySelector('[data-testid="rsvp-form"]');
   if (!form) return;
 
+  initMobileFormFocus(form);
+
   const nameInput = form.querySelector('[data-testid="rsvp-name"]');
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
@@ -158,6 +160,108 @@ function initRSVPForm() {
 
     if (typeof createConfetti === 'function' && attending === 'yes') {
       createConfetti();
+    }
+  });
+}
+
+function initMobileFormFocus(form) {
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
+  if (!mobileQuery.matches) return;
+
+  const header = document.querySelector('header');
+  let activeField = null;
+
+  function getHeaderOffset() {
+    return (header?.offsetHeight || 72) + 12;
+  }
+
+  function scrollFieldIntoView(field) {
+    if (!field || !mobileQuery.matches) return;
+
+    const runScroll = () => {
+      const viewport = window.visualViewport;
+      const viewportHeight = viewport?.height ?? window.innerHeight;
+      const viewportTop = viewport?.offsetTop ?? 0;
+      const headerOffset = getHeaderOffset();
+      const padding = 20;
+
+      const rect = field.getBoundingClientRect();
+      const visibleTop = headerOffset;
+      const visibleBottom = viewportTop + viewportHeight - padding;
+
+      let delta = 0;
+
+      if (rect.top < visibleTop) {
+        delta = rect.top - visibleTop;
+      } else if (rect.bottom > visibleBottom) {
+        delta = rect.bottom - visibleBottom;
+      }
+
+      if (delta !== 0) {
+        window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+      }
+    };
+
+    window.requestAnimationFrame(() => {
+      runScroll();
+      window.setTimeout(runScroll, 120);
+      window.setTimeout(runScroll, 320);
+    });
+  }
+
+  function setKeyboardOpen(isOpen) {
+    document.body.classList.toggle('rsvp-keyboard-open', isOpen);
+  }
+
+  form.addEventListener(
+    'focusin',
+    (event) => {
+      const field = event.target.closest('input, textarea');
+      if (!field || !form.contains(field)) return;
+
+      activeField = field;
+      setKeyboardOpen(true);
+      scrollFieldIntoView(field);
+    },
+    true
+  );
+
+  form.addEventListener(
+    'focusout',
+    (event) => {
+      const next = event.relatedTarget;
+      if (next && form.contains(next) && next.matches('input, textarea')) {
+        return;
+      }
+
+      window.setTimeout(() => {
+        if (document.activeElement && form.contains(document.activeElement)) {
+          return;
+        }
+
+        activeField = null;
+        setKeyboardOpen(false);
+      }, 80);
+    },
+    true
+  );
+
+  window.visualViewport?.addEventListener('resize', () => {
+    if (activeField) {
+      scrollFieldIntoView(activeField);
+    }
+  });
+
+  window.visualViewport?.addEventListener('scroll', () => {
+    if (activeField) {
+      scrollFieldIntoView(activeField);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (!mobileQuery.matches) {
+      setKeyboardOpen(false);
+      activeField = null;
     }
   });
 }

@@ -184,9 +184,13 @@
 }
 
 /* RSVP form — mobile UX */
+:root {
+    --rsvp-header-offset: 4.75rem;
+}
+
 html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--rsvp-header-offset);
 }
 
 body {
@@ -194,11 +198,14 @@ body {
 }
 
 #rsvp {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--rsvp-header-offset);
+}
+
+.rsvp-form-wrap {
+    min-width: 0;
 }
 
 .rsvp-form {
-    scroll-margin-top: 5rem;
     touch-action: manipulation;
 }
 
@@ -208,13 +215,38 @@ body {
     touch-action: manipulation;
 }
 
-.rsvp-form input,
-.rsvp-form textarea {
-    font-size: 16px;
+.rsvp-field {
+    scroll-margin-top: calc(var(--rsvp-header-offset) + 0.75rem);
+    scroll-margin-bottom: 1.5rem;
 }
 
-.rsvp-form .rsvp-attending-btn {
-    min-height: 5.5rem;
+.rsvp-input {
+    font-size: 16px;
+    line-height: 1.4;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.rsvp-input:focus {
+    box-shadow: none;
+}
+
+.rsvp-attending-btn {
+    min-height: 4.75rem;
+    box-shadow: 4px 4px 0 0 transparent;
+}
+
+.rsvp-attending-btn.nb-shadow {
+    box-shadow: 4px 4px 0 0 var(--nb-border, #2a2a2a);
+}
+
+.rsvp-attending-title {
+    line-height: 1.15;
+}
+
+.rsvp-guest-btn {
+    min-height: 3rem;
+    min-width: 3rem;
 }
 
 .rsvp-guest-count-section {
@@ -239,22 +271,59 @@ body {
     margin-top: -0.25rem;
 }
 
+body.rsvp-keyboard-open {
+    scroll-behavior: auto;
+}
+
+body.rsvp-keyboard-open .rsvp-form {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 1023px) {
+    .rsvp-intro-note {
+        display: none;
+    }
+
+    #rsvp .rsvp-intro h2 {
+        font-size: clamp(2rem, 8vw, 2.75rem);
+        margin-top: 1.5rem;
+    }
+
+    #rsvp .rsvp-intro > p.font-mono-nb:first-child {
+        display: none;
+    }
+}
+
+@media (min-width: 400px) {
+    .rsvp-attending-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 639px) {
-    #rsvp h2 {
-        font-size: clamp(2.25rem, 9vw, 3rem);
+    #rsvp {
+        padding-top: 3.5rem;
+        padding-bottom: 2rem;
     }
 
     .rsvp-form {
         border-radius: 1.25rem;
-    }
-
-    .rsvp-form .rsvp-attending-btn p.font-heading {
-        font-size: 1.25rem;
+        padding: 1.25rem;
     }
 
     .rsvp-form [data-testid="rsvp-submit"] {
         width: 100%;
         justify-content: center;
+    }
+
+    .rsvp-attending-btn {
+        min-height: 4.25rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .rsvp-form .grid.grid-cols-1.gap-5 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
