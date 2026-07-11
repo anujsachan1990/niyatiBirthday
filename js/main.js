@@ -93,8 +93,8 @@ function closeMobileMenu() {
 // 3. COUNTDOWN TIMER
 // ============================================
 function initCountdown() {
-  // Set the target date - Niyati's birthday (August 7th, 2026 at 3:00 PM)
-  const targetDate = new Date('2026-08-07T15:00:00').getTime();
+  // Set the target date - Niyati's birthday (August 8th, 2026 at 4:30 PM)
+  const targetDate = new Date('2026-08-08T16:30:00').getTime();
   
   console.log('Target date:', new Date(targetDate));
   console.log('Current date:', new Date());
