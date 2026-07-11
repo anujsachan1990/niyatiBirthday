@@ -1,0 +1,121 @@
+.App {
+    min-height: 100vh;
+    background-color: var(--nb-bg);
+}
+
+/* Balloon Animations */
+#hero svg[viewBox="0 0 90 112"],
+#hero svg[viewBox="0 0 60 60"] {
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+/* Add subtle hover effect for balloons */
+#hero svg[viewBox="0 0 90 112"]:hover {
+    transform: scale(1.05) !important;
+    transition: transform 0.3s ease-out;
+}
+
+/* Smooth animation for stars */
+#hero svg[viewBox="0 0 60 60"]:hover {
+    transform: scale(1.1) rotate(180deg) !important;
+    transition: transform 0.6s ease-out;
+}
+
+/* Add shimmer effect to balloon highlights */
+@keyframes shimmer {
+    0%, 100% {
+        opacity: 0.55;
+    }
+    50% {
+        opacity: 0.75;
+    }
+}
+
+#hero svg ellipse[fill="#ffffff"] {
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Admin dashboard */
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-login-form .admin-submit {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+}
+
+#admin-login {
+    padding-bottom: 2.75rem;
+}
+
+.admin-dashboard:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .admin-stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.admin-table th,
+.admin-table td {
+    vertical-align: top;
+}
+
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1) {
+    width: 14%;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+    width: 22%;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3) {
+    width: 12%;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+    width: 8%;
+    text-align: center;
+}
+
+.admin-table th:nth-child(5),
+.admin-table td:nth-child(5) {
+    width: 24%;
+    word-break: break-word;
+}
+
+.admin-table th:nth-child(6),
+.admin-table td:nth-child(6) {
+    width: 20%;
+    white-space: nowrap;
+}

@@ -1,0 +1,34 @@
+/* Cormorant Garamond - Heading Font */
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSqn7B6D.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Outfit - Body Font */
+@font-face {
+    font-family: 'Outfit';
+    src: url('../fonts/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Azeret Mono - Monospace Font */
+@font-face {
+    font-family: 'Azeret Mono';
+    src: url('../fonts/3XFuErsiyJsY9O_Gepph-HHhZfn23vRK.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "niyati-birthday",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Niyati's first birthday invitation website",
+  "scripts": {
+    "dev": "serve . -l 3000",
+    "start": "serve . -l 3000",
+    "build": "node scripts/build.js",
+    "preview": "serve dist -l 4173",
+    "clean": "node scripts/build.js --clean"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
