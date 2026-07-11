@@ -7,6 +7,7 @@ function initRSVPForm() {
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
   const attendingNo = form.querySelector('[data-testid="rsvp-attending-no"]');
   const guestCountInput = form.querySelector('[data-testid="rsvp-guest-count"]');
+  const guestCountSection = form.querySelector('[data-testid="rsvp-guest-count-section"]');
   const guestCountButtons = form.querySelectorAll('[data-testid^="rsvp-guest-count-option"]');
   const messageInput = form.querySelector('[data-testid="rsvp-message"]');
   const submitButton = form.querySelector('[data-testid="rsvp-submit"]');
@@ -18,6 +19,8 @@ function initRSVPForm() {
   const unselectedAttendingClasses = ['bg-white', 'hover:bg-[#F5E3B8]/60'];
   const selectedGuestClasses = ['bg-[#1F1D1B]', 'text-[#F9F6F0]'];
   const unselectedGuestClasses = ['bg-white', 'hover:bg-[#F5E3B8]'];
+
+  const MAX_GUEST_COUNT = 4;
 
   function setAttending(value) {
     attending = value;
@@ -31,10 +34,20 @@ function initRSVPForm() {
       button.classList.remove(...selectedAttendingClasses, ...unselectedAttendingClasses);
       button.classList.add(...(isSelected ? selectedAttendingClasses : unselectedAttendingClasses));
     });
+
+    if (guestCountSection) {
+      guestCountSection.classList.toggle('hidden', value === 'no');
+    }
+
+    if (value === 'no') {
+      setGuestCount(0);
+    } else if (guestCount < 1) {
+      setGuestCount(1);
+    }
   }
 
   function setGuestCount(value) {
-    guestCount = value;
+    guestCount = Math.min(Math.max(value, 0), MAX_GUEST_COUNT);
     if (guestCountInput) guestCountInput.value = String(value);
 
     guestCountButtons.forEach((button) => {
@@ -56,7 +69,7 @@ function initRSVPForm() {
 
     status.textContent = message;
     status.className = `font-mono-nb text-xs uppercase tracking-[0.2em] ${
-      type === 'error' ? 'text-red-700' : 'text-[#1F1D1B]/70'
+      type === 'error' ? 'text-red-600 font-semibold' : 'text-[#1F1D1B]/70'
     }`;
   }
 
@@ -88,6 +101,11 @@ function initRSVPForm() {
     if (!email) {
       showStatus('Please enter your email.', 'error');
       emailInput?.focus();
+      return;
+    }
+
+    if (attending === 'yes' && (guestCount < 1 || guestCount > MAX_GUEST_COUNT)) {
+      showStatus(`Please select between 1 and ${MAX_GUEST_COUNT} guests.`, 'error');
       return;
     }
 
