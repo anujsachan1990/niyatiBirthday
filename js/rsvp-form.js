@@ -2,8 +2,6 @@ function initRSVPForm() {
   const form = document.querySelector('[data-testid="rsvp-form"]');
   if (!form) return;
 
-  initMobileFormFocus(form);
-
   const nameInput = form.querySelector('[data-testid="rsvp-name"]');
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
@@ -17,10 +15,10 @@ function initRSVPForm() {
   let attending = 'yes';
   let guestCount = 1;
 
-  const selectedAttendingClasses = ['bg-[#C1D5C9]', 'nb-shadow'];
-  const unselectedAttendingClasses = ['bg-white', 'hover:bg-[#F5E3B8]/60'];
-  const selectedGuestClasses = ['bg-[#1F1D1B]', 'text-[#F9F6F0]'];
-  const unselectedGuestClasses = ['bg-white', 'hover:bg-[#F5E3B8]'];
+  const selectedAttendingClasses = ['is-selected'];
+  const unselectedAttendingClasses = [];
+  const selectedGuestClasses = ['is-selected'];
+  const unselectedGuestClasses = [];
 
   const MAX_GUEST_COUNT = 4;
 
@@ -160,126 +158,6 @@ function initRSVPForm() {
 
     if (typeof createConfetti === 'function' && attending === 'yes') {
       createConfetti();
-    }
-  });
-}
-
-function initMobileFormFocus(form) {
-  const mobileQuery = window.matchMedia('(max-width: 767px)');
-  if (!mobileQuery.matches) return;
-
-  const header = document.querySelector('header');
-  let activeField = null;
-  let alignTimer = null;
-  let isAligning = false;
-
-  function getScrollTarget(field) {
-    return field.closest('.rsvp-field') || field;
-  }
-
-  function getVisibleTop() {
-    const viewport = window.visualViewport;
-    const viewportTop = viewport?.offsetTop ?? 0;
-    const headerHeight = header?.getBoundingClientRect().height ?? 72;
-    return viewportTop + headerHeight + 12;
-  }
-
-  function getVisibleBottom() {
-    const viewport = window.visualViewport;
-    const viewportTop = viewport?.offsetTop ?? 0;
-    const viewportHeight = viewport?.height ?? window.innerHeight;
-    return viewportTop + viewportHeight - 20;
-  }
-
-  function alignField(field) {
-    if (!field || !mobileQuery.matches || isAligning) return;
-
-    const target = getScrollTarget(field);
-    const rect = target.getBoundingClientRect();
-    const visibleTop = getVisibleTop();
-    const visibleBottom = getVisibleBottom();
-    const targetTop = Math.min(visibleTop, visibleBottom - rect.height - 12);
-
-    const delta = rect.top - targetTop;
-    if (Math.abs(delta) < 6) return;
-
-    isAligning = true;
-    window.scrollTo({
-      top: Math.max(0, window.scrollY + delta),
-      left: 0,
-      behavior: 'auto',
-    });
-
-    window.requestAnimationFrame(() => {
-      isAligning = false;
-    });
-  }
-
-  function scheduleAlign(field) {
-    if (!field) return;
-    window.clearTimeout(alignTimer);
-    window.requestAnimationFrame(() => alignField(field));
-    alignTimer = window.setTimeout(() => alignField(field), 320);
-  }
-
-  function setKeyboardOpen(isOpen) {
-    document.body.classList.toggle('rsvp-keyboard-open', isOpen);
-  }
-
-  form.addEventListener(
-    'focusin',
-    (event) => {
-      const field = event.target.closest('input:not([type="hidden"]), textarea');
-      if (!field || !form.contains(field)) return;
-
-      activeField = field;
-      setKeyboardOpen(true);
-      scheduleAlign(field);
-    },
-    true
-  );
-
-  form.addEventListener(
-    'focusout',
-    (event) => {
-      const next = event.relatedTarget;
-      if (
-        next &&
-        form.contains(next) &&
-        next.matches('input:not([type="hidden"]), textarea')
-      ) {
-        return;
-      }
-
-      window.setTimeout(() => {
-        const active = document.activeElement;
-        if (
-          active &&
-          form.contains(active) &&
-          active.matches('input:not([type="hidden"]), textarea')
-        ) {
-          return;
-        }
-
-        activeField = null;
-        setKeyboardOpen(false);
-        window.clearTimeout(alignTimer);
-      }, 120);
-    },
-    true
-  );
-
-  window.visualViewport?.addEventListener('resize', () => {
-    if (activeField) {
-      scheduleAlign(activeField);
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    if (!mobileQuery.matches) {
-      setKeyboardOpen(false);
-      activeField = null;
-      window.clearTimeout(alignTimer);
     }
   });
 }
