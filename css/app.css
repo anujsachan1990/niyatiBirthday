@@ -3,6 +3,121 @@
     background-color: var(--nb-bg);
 }
 
+/* Header logo */
+.site-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1;
+    min-width: 0;
+}
+
+.site-logo:focus-visible {
+    outline: 2px solid var(--nb-border, #2a2a2a);
+    outline-offset: 4px;
+    border-radius: 9999px;
+}
+
+.site-logo__float {
+    display: block;
+    flex-shrink: 0;
+    transform-origin: center bottom;
+    animation: logo-balloon-float 4.5s ease-in-out infinite;
+    will-change: transform;
+}
+
+.site-logo:hover .site-logo__float {
+    animation-duration: 3.5s;
+}
+
+.site-logo__image {
+    display: block;
+    width: auto;
+    height: 2.85rem;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes logo-balloon-float {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-5px) rotate(-2.5deg);
+    }
+
+    50% {
+        transform: translateY(-9px) rotate(0deg);
+    }
+
+    75% {
+        transform: translateY(-4px) rotate(2.5deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-logo__float {
+        animation: none;
+    }
+}
+
+.site-logo__text {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    letter-spacing: -0.02em;
+    color: #1f1d1b;
+    white-space: nowrap;
+}
+
+.site-logo__sep {
+    color: #5c564f;
+    font-weight: 400;
+}
+
+.site-logo__one {
+    position: relative;
+    font-style: italic;
+    isolation: isolate;
+}
+
+.site-logo__one::after {
+    content: "";
+    position: absolute;
+    left: -0.06em;
+    right: -0.06em;
+    bottom: 0.06em;
+    height: 0.34em;
+    background: #f5e3b8;
+    z-index: -1;
+    border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+    .site-logo {
+        gap: 0.75rem;
+    }
+
+    .site-logo__image {
+        height: 3.15rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .site-logo__text {
+        font-size: 1.1rem;
+    }
+
+    .site-logo__image {
+        height: 2.5rem;
+    }
+}
+
 /* Balloon Animations */
 #hero svg[viewBox="0 0 90 112"],
 #hero svg[viewBox="0 0 60 60"] {
