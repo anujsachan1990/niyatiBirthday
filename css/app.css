@@ -119,3 +119,36 @@
     width: 20%;
     white-space: nowrap;
 }
+
+.rsvp-status {
+    margin-top: 0.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #2a2a2a;
+    padding: 1rem 1.25rem;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.rsvp-status--error {
+    background-color: #fde8e8;
+    color: #b91c1c;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.rsvp-status--success {
+    background-color: #c1d5c9;
+    color: #1f1d1b;
+    font-size: 1.125rem;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 #2a2a2a;
+}
+
+.rsvp-status--info {
+    background-color: #f5e3b8;
+    color: #1f1d1b;
+    font-size: 0.875rem;
+    font-weight: 500;
+}

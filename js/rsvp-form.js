@@ -48,7 +48,7 @@ function initRSVPForm() {
 
   function setGuestCount(value) {
     guestCount = Math.min(Math.max(value, 0), MAX_GUEST_COUNT);
-    if (guestCountInput) guestCountInput.value = String(value);
+    if (guestCountInput) guestCountInput.value = String(guestCount);
 
     guestCountButtons.forEach((button) => {
       const count = Number(button.textContent.trim());
@@ -61,16 +61,23 @@ function initRSVPForm() {
   function showStatus(message, type) {
     let status = form.querySelector('[data-testid="rsvp-status"]');
     if (!status) {
-      status = document.createElement('p');
+      status = document.createElement('div');
       status.setAttribute('data-testid', 'rsvp-status');
-      status.className = 'font-mono-nb text-xs uppercase tracking-[0.2em]';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
       submitButton.parentNode.insertBefore(status, submitButton);
     }
 
     status.textContent = message;
-    status.className = `font-mono-nb text-xs uppercase tracking-[0.2em] ${
-      type === 'error' ? 'text-red-600 font-semibold' : 'text-[#1F1D1B]/70'
-    }`;
+    status.className = 'rsvp-status';
+
+    if (type === 'error') {
+      status.classList.add('rsvp-status--error');
+    } else if (type === 'success') {
+      status.classList.add('rsvp-status--success');
+    } else {
+      status.classList.add('rsvp-status--info');
+    }
   }
 
   attendingYes?.addEventListener('click', () => setAttending('yes'));
