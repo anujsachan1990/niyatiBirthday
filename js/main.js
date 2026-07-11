@@ -142,7 +142,7 @@ function initCountdown() {
 // 4. FLOATING BALLOON ANIMATIONS
 // ============================================
 function initFloatingAnimations() {
-  if (window.matchMedia('(max-width: 1023px), (prefers-reduced-motion: reduce)').matches) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return;
   }
 
