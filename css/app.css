@@ -118,6 +118,33 @@
     }
 }
 
+/* Hero spacing — content ↔ marquee ↔ next section */
+#hero > div.relative {
+    padding-bottom: 7rem;
+}
+
+#hero .hero-photo-stack {
+    margin-bottom: 4rem;
+}
+
+#hero {
+    padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+    #hero > div.relative {
+        padding-bottom: 9rem;
+    }
+
+    #hero .hero-photo-stack {
+        margin-bottom: 5rem;
+    }
+
+    #hero {
+        padding-bottom: 8rem;
+    }
+}
+
 /* Balloon Animations */
 #hero svg[viewBox="0 0 90 112"],
 #hero svg[viewBox="0 0 60 60"] {
