@@ -201,12 +201,27 @@ body {
     scroll-margin-top: var(--rsvp-header-offset);
 }
 
+.rsvp-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
 .rsvp-form-wrap {
     min-width: 0;
 }
 
 .rsvp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+    padding: 1.35rem;
     touch-action: manipulation;
+}
+
+.rsvp-form-mobile-header {
+    display: none;
 }
 
 .rsvp-form input,
@@ -215,9 +230,20 @@ body {
     touch-action: manipulation;
 }
 
+.rsvp-name-email-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+}
+
 .rsvp-field {
     scroll-margin-top: calc(var(--rsvp-header-offset) + 0.75rem);
     scroll-margin-bottom: 1.5rem;
+}
+
+.rsvp-label {
+    display: block;
+    margin-bottom: 0.45rem;
 }
 
 .rsvp-input {
@@ -225,14 +251,21 @@ body {
     line-height: 1.4;
     appearance: none;
     -webkit-appearance: none;
+    width: 100%;
 }
 
 .rsvp-input:focus {
     box-shadow: none;
 }
 
+.rsvp-attending-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
 .rsvp-attending-btn {
-    min-height: 4.75rem;
+    min-height: 4.5rem;
     box-shadow: 4px 4px 0 0 transparent;
 }
 
@@ -242,16 +275,27 @@ body {
 
 .rsvp-attending-title {
     line-height: 1.15;
+    font-size: 1.15rem;
+}
+
+.rsvp-guest-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 3.25rem));
+    gap: 0.65rem;
 }
 
 .rsvp-guest-btn {
-    min-height: 3rem;
-    min-width: 3rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
 .rsvp-guest-count-section {
     overflow: hidden;
-    max-height: 12rem;
+    max-height: 8rem;
     opacity: 1;
     transition: max-height 0.28s ease, opacity 0.22s ease, margin 0.28s ease;
 }
@@ -268,7 +312,13 @@ body {
 }
 
 .rsvp-status-slot:not(:empty) {
-    margin-top: -0.25rem;
+    margin-top: -0.35rem;
+}
+
+.rsvp-submit {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.15rem;
 }
 
 body.rsvp-keyboard-open {
@@ -280,50 +330,94 @@ body.rsvp-keyboard-open .rsvp-form {
 }
 
 @media (max-width: 1023px) {
-    .rsvp-intro-note {
+    .rsvp-intro {
         display: none;
     }
 
-    #rsvp .rsvp-intro h2 {
-        font-size: clamp(2rem, 8vw, 2.75rem);
-        margin-top: 1.5rem;
+    .rsvp-form-mobile-header {
+        display: block;
+        padding-bottom: 1rem;
+        margin-bottom: 0.15rem;
+        border-bottom: 1px solid rgba(31, 29, 27, 0.1);
     }
 
-    #rsvp .rsvp-intro > p.font-mono-nb:first-child {
-        display: none;
+    .rsvp-form-kicker {
+        font-size: 0.65rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #5c564f;
     }
-}
 
-@media (min-width: 400px) {
-    .rsvp-attending-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .rsvp-form-title {
+        margin-top: 0.45rem;
+        font-size: clamp(1.85rem, 8vw, 2.35rem);
+        line-height: 0.98;
     }
-}
 
-@media (max-width: 639px) {
+    .rsvp-form-deadline {
+        margin-top: 0.55rem;
+        font-size: 0.92rem;
+        color: #5c564f;
+        line-height: 1.45;
+    }
+
     #rsvp {
-        padding-top: 3.5rem;
+        padding-top: 3rem;
         padding-bottom: 2rem;
     }
 
     .rsvp-form {
-        border-radius: 1.25rem;
-        padding: 1.25rem;
-    }
-
-    .rsvp-form [data-testid="rsvp-submit"] {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .rsvp-attending-btn {
-        min-height: 4.25rem;
+        border-radius: 1.35rem;
     }
 }
 
 @media (min-width: 640px) {
-    .rsvp-form .grid.grid-cols-1.gap-5 {
+    .rsvp-name-email-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+
+    .rsvp-form {
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+
+    .rsvp-attending-title {
+        font-size: 1.35rem;
+    }
+
+    .rsvp-guest-btn {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .rsvp-submit {
+        width: auto;
+        align-self: flex-start;
+    }
+}
+
+@media (min-width: 1024px) {
+    .rsvp-layout {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 3rem;
+    }
+
+    .rsvp-intro {
+        grid-column: span 5;
+    }
+
+    .rsvp-form-wrap {
+        grid-column: span 7;
+    }
+
+    .rsvp-form {
+        padding: 2.5rem;
+        gap: 1.65rem;
+    }
+
+    .rsvp-attending-title {
+        font-size: 1.5rem;
     }
 }
 
