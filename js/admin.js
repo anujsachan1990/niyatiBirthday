@@ -8,6 +8,15 @@ function formatDate(value) {
   });
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function summarizeRsvps(rows) {
   const attending = rows.filter((row) => row.attending === 'yes');
   const declined = rows.filter((row) => row.attending === 'no');
@@ -77,6 +86,17 @@ function renderTable(rows, filter) {
           <td class="px-4 py-4 font-heading text-xl text-center">${row.attending === 'yes' ? row.guest_count : '—'}</td>
           <td class="px-4 py-4 font-body text-sm text-[#5C564F] max-w-xs">${row.message || '—'}</td>
           <td class="px-4 py-4 font-mono-nb text-xs text-[#5C564F] whitespace-nowrap">${formatDate(row.created_at)}</td>
+          <td class="px-4 py-4 text-center">
+            <button
+              type="button"
+              class="admin-delete-btn"
+              data-rsvp-delete
+              data-rsvp-id="${row.id}"
+              data-rsvp-name="${escapeHtml(row.name)}"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       `
     )
@@ -178,6 +198,31 @@ async function initAdmin() {
   filterSelect?.addEventListener('change', async (event) => {
     currentFilter = event.target.value;
     await refreshDashboard();
+  });
+
+  document.getElementById('admin-table-body')?.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-rsvp-delete]');
+    if (!button) return;
+
+    const id = button.dataset.rsvpId;
+    const name = button.dataset.rsvpName;
+    if (!id) return;
+
+    if (!window.confirm(`Delete RSVP from ${name}? This cannot be undone.`)) {
+      return;
+    }
+
+    button.disabled = true;
+
+    try {
+      const { error } = await supabase.from('rsvps').delete().eq('id', id);
+      if (error) throw error;
+      await refreshDashboard();
+    } catch (error) {
+      console.error('Failed to delete RSVP:', error);
+      window.alert('Could not delete this RSVP. Check Supabase delete permissions.');
+      button.disabled = false;
+    }
   });
 }
 

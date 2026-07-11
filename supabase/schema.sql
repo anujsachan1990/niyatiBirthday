@@ -28,6 +28,12 @@ create policy "Authenticated users can view RSVPs"
   to authenticated
   using (true);
 
+-- Only logged-in admins can delete spam responses
+create policy "Authenticated users can delete RSVPs"
+  on public.rsvps for delete
+  to authenticated
+  using (true);
+
 -- Optional: restrict reads to your email only (uncomment and edit)
 -- drop policy "Authenticated users can view RSVPs" on public.rsvps;
 -- create policy "Admin email can view RSVPs"

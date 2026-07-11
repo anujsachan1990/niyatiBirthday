@@ -89,35 +89,65 @@
 
 .admin-table th:nth-child(1),
 .admin-table td:nth-child(1) {
-    width: 14%;
+    width: 12%;
 }
 
 .admin-table th:nth-child(2),
 .admin-table td:nth-child(2) {
-    width: 22%;
+    width: 18%;
 }
 
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3) {
-    width: 12%;
+    width: 10%;
 }
 
 .admin-table th:nth-child(4),
 .admin-table td:nth-child(4) {
-    width: 8%;
+    width: 7%;
     text-align: center;
 }
 
 .admin-table th:nth-child(5),
 .admin-table td:nth-child(5) {
-    width: 24%;
+    width: 22%;
     word-break: break-word;
 }
 
 .admin-table th:nth-child(6),
 .admin-table td:nth-child(6) {
-    width: 20%;
+    width: 16%;
     white-space: nowrap;
+}
+
+.admin-table th:nth-child(7),
+.admin-table td:nth-child(7) {
+    width: 15%;
+    text-align: center;
+}
+
+.admin-delete-btn {
+    border: 1px solid #2a2a2a;
+    border-radius: 9999px;
+    background-color: #fde8e8;
+    color: #b91c1c;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    padding: 0.5rem 0.85rem;
+    text-transform: uppercase;
+    transition: background-color 0.15s ease;
+}
+
+.admin-delete-btn:hover:not(:disabled) {
+    background-color: #fbd5d5;
+}
+
+.admin-delete-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .rsvp-status {
