@@ -4,6 +4,49 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 const dist = path.join(root, 'dist');
 
+function loadEnvFile() {
+  const envPath = path.join(root, '.env');
+  if (!fs.existsSync(envPath)) return;
+
+  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    if (!process.env[key]) {
+      process.env[key] = value;
+    }
+  }
+}
+
+function escapeJsString(value) {
+  return value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function writeConfig(dest, url, key) {
+  const content = [
+    '// Generated at build time — do not edit in dist/',
+    `window.SUPABASE_URL = '${escapeJsString(url)}';`,
+    `window.SUPABASE_ANON_KEY = '${escapeJsString(key)}';`,
+    '',
+  ].join('\n');
+
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, content);
+}
+
 const copyTargets = [
   'index.html',
   'admin',
@@ -52,15 +95,25 @@ for (const target of copyTargets) {
   copyItem(src, path.join(dist, target));
 }
 
+loadEnvFile();
+
 const configSrc = path.join(root, 'js', 'config.js');
 const configExampleSrc = path.join(root, 'js', 'config.example.js');
 const configDest = path.join(dist, 'js', 'config.js');
+const envUrl = process.env.SUPABASE_URL;
+const envKey = process.env.SUPABASE_ANON_KEY;
 
-if (fs.existsSync(configSrc)) {
+if (envUrl && envKey) {
+  writeConfig(configDest, envUrl, envKey);
+  console.log('Wrote js/config.js from environment variables.');
+} else if (fs.existsSync(configSrc)) {
   fs.copyFileSync(configSrc, configDest);
+  console.log('Copied local js/config.js.');
 } else if (fs.existsSync(configExampleSrc)) {
   fs.copyFileSync(configExampleSrc, configDest);
-  console.warn('Using js/config.example.js — copy it to js/config.js and add your Supabase keys.');
+  console.warn(
+    'Supabase not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in Netlify/Vercel env vars, or create js/config.js locally.'
+  );
 }
 
 console.log('Build complete → dist/');

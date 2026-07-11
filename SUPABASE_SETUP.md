@@ -27,18 +27,36 @@ Optional: restrict reads to your email only — see the commented policy at the 
 
 ## 3. Add API keys to the site
 
-1. Copy the example config:
+In Supabase, open **Project Settings → API** and copy:
+
+- **Project URL** → `SUPABASE_URL`
+- **anon public key** → `SUPABASE_ANON_KEY`
+
+Never put the `service_role` key in frontend code.
+
+### Local development (pick one)
+
+**Option A — `.env` file (recommended)**
+
+```bash
+cp .env.example .env
+# edit .env with your values
+yarn build   # or yarn dev (create js/config.js for dev server — see below)
+```
+
+For `yarn dev`, also create `js/config.js` once:
 
 ```bash
 cp js/config.example.js js/config.js
+# paste the same values as in .env
 ```
 
-2. In Supabase, open **Project Settings → API**
-3. Paste into `js/config.js`:
-   - **Project URL** → `SUPABASE_URL`
-   - **anon public key** → `SUPABASE_ANON_KEY`
+**Option B — `js/config.js` only**
 
-Never put the `service_role` key in frontend code.
+```bash
+cp js/config.example.js js/config.js
+# paste your Supabase URL and anon key
+```
 
 ## 4. Run locally
 
@@ -51,13 +69,29 @@ yarn dev
 
 Submit a test RSVP, then sign in on the admin page to confirm it appears.
 
-## 5. Deploy
+## 5. Deploy on Netlify
+
+Because `js/config.js` is not in GitHub, set env vars in Netlify so the build can generate it:
+
+1. Netlify → your site → **Site configuration** → **Environment variables**
+2. Add:
+   - `SUPABASE_URL` = your Supabase project URL
+   - `SUPABASE_ANON_KEY` = your anon public key
+3. **Deploys** → **Trigger deploy** → **Deploy site** (rebuild required)
+
+Netlify already runs `yarn build` (see `netlify.toml`), which writes `dist/js/config.js` from those vars.
+
+## 6. Deploy on Vercel
+
+Same env var names in **Project Settings → Environment Variables**, then redeploy.
+
+## 7. Manual / other hosts
 
 ```bash
 yarn build
 ```
 
-Deploy the `dist/` folder (Netlify or Vercel). Make sure `js/config.js` exists locally with real keys before building, since it is gitignored.
+Deploy the `dist/` folder. Either set `SUPABASE_URL` and `SUPABASE_ANON_KEY` before building, or keep a local `js/config.js`.
 
 ## What `/admin` shows
 
@@ -72,8 +106,9 @@ The table lists name, email, status, guests, message, and submission time. Use t
 
 ## Troubleshooting
 
-**Form says "not configured"**
-- `js/config.js` is missing or still has placeholder values
+**Form or admin says "not configured"**
+- Local: `js/config.js` missing or still has placeholder values
+- Netlify/Vercel: env vars not set, or site not redeployed after adding them
 
 **Admin login works but no data**
 - Confirm `supabase/schema.sql` was run
