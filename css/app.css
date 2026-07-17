@@ -255,6 +255,13 @@
     min-width: 0;
 }
 
+.admin-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .admin-header-back {
     align-self: flex-start;
     flex-shrink: 0;

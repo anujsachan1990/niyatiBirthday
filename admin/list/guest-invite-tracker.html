@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5f2">
+  <title>Guest Invite Tracker</title>
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --bg-elevated: #ffffff;
+      --bg-muted: #efece7;
+      --text: #1a1a1a;
+      --text-muted: #5c574f;
+      --border: #ddd7ce;
+      --accent: #2f6b4f;
+      --accent-soft: #e4f0e9;
+      --danger: #8b3a3a;
+      --danger-soft: #f5e8e8;
+      --shadow: 0 1px 3px rgba(26, 26, 26, 0.06), 0 4px 14px rgba(26, 26, 26, 0.04);
+      --radius: 12px;
+      --font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --sticky-offset: 0px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #161513;
+      --bg-elevated: #221f1c;
+      --bg-muted: #2c2925;
+      --text: #f3efe8;
+      --text-muted: #a9a29a;
+      --border: #3d3832;
+      --accent: #6db892;
+      --accent-soft: #24352c;
+      --danger: #e08a8a;
+      --danger-soft: #3a2828;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .app {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1rem 1rem 3rem;
+    }
+
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      margin: 0 -1rem;
+      padding: 0.85rem 1rem 0.9rem;
+    }
+
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .title-block p {
+      margin: 0.2rem 0 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      background: var(--bg-muted);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn:focus-visible,
+    .field:focus-visible,
+    .qty-btn:focus-visible,
+    .pill:focus-visible,
+    .toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      background: var(--text);
+    }
+
+    [data-theme="dark"] .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #102018;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 720px) {
+      .summary {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+
+    .stat {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.65rem;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-value {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .search-wrap {
+      flex: 1 1 220px;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      border-radius: 999px;
+      padding: 0.55rem 0.95rem;
+      box-shadow: var(--shadow);
+    }
+
+    .toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      border-radius: 999px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .toggle input {
+      accent-color: var(--accent);
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .toggle.is-active {
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      color: var(--accent);
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .pill[aria-pressed="true"] {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    [data-theme="dark"] .pill[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #102018;
+    }
+
+    .table-panel {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .guest-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .guest-table th {
+      text-align: left;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 0.55rem 0.35rem;
+      background: var(--bg-muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .guest-table td {
+      padding: 0.35rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .guest-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .guest-table tbody tr {
+      transition: background 0.15s ease;
+    }
+
+    .guest-table tbody tr:hover {
+      background: color-mix(in srgb, var(--bg-muted) 55%, transparent);
+    }
+
+    .guest-table tbody tr.is-invited {
+      background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+    }
+
+    .guest-table tbody tr.is-invited:hover {
+      background: color-mix(in srgb, var(--accent-soft) 90%, transparent);
+    }
+
+    .col-cat { width: 10%; }
+    .col-family { width: 12%; }
+    .col-people { width: 18%; }
+    .col-adults { width: 7%; }
+    .col-kids { width: 7%; }
+    .col-invite { width: 9%; }
+    .col-rsvp { width: 9%; }
+    .col-notes { width: 18%; }
+    .col-actions { width: 5%; }
+
+    .field {
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 0.3rem 0.4rem;
+      min-height: 1.9rem;
+      font-size: 0.82rem;
+    }
+
+    textarea.field {
+      resize: vertical;
+      min-height: 1.9rem;
+      line-height: 1.3;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+    }
+
+    .qty .field {
+      width: 2.25rem;
+      flex: 0 0 2.25rem;
+      text-align: center;
+      padding-left: 0.1rem;
+      padding-right: 0.1rem;
+      -moz-appearance: textfield;
+    }
+
+    .qty .field::-webkit-outer-spin-button,
+    .qty .field::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .qty-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      line-height: 1;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    .qty-btn:hover {
+      background: var(--border);
+    }
+
+    .invite-cell {
+      text-align: center;
+    }
+
+    .invite-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      min-height: 1.9rem;
+      padding: 0.2rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .invite-check input {
+      width: 0.95rem;
+      height: 0.95rem;
+      accent-color: var(--accent);
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .invite-check.is-on {
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      color: var(--accent);
+    }
+
+    .status-pill {
+      display: inline-block;
+    }
+
+    .btn-delete {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: color-mix(in srgb, var(--danger) 30%, var(--border));
+      box-shadow: none;
+      padding: 0.25rem 0.45rem;
+      font-size: 0.72rem;
+      width: 100%;
+    }
+
+    .btn-delete:hover {
+      background: color-mix(in srgb, var(--danger-soft) 70%, var(--danger) 12%);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .list-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .list-toolbar h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .list-footer {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 0.75rem;
+    }
+
+    @media (max-width: 900px) {
+      .col-cat { width: 11%; }
+      .col-people { width: 16%; }
+      .col-notes { width: 14%; }
+      .col-adults,
+      .col-kids { width: 5%; }
+      .status-pill {
+        display: none;
+      }
+      .invite-check {
+        padding: 0.25rem;
+        border-radius: 8px;
+      }
+      .qty-btn {
+        display: none;
+      }
+      .qty .field {
+        width: 100%;
+        flex: 1 1 auto;
+      }
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 0.35rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      color: var(--text);
+    }
+
+    @media print {
+      .sticky-top {
+        position: static;
+        backdrop-filter: none;
+        border: none;
+        margin: 0;
+        padding: 0 0 0.75rem;
+      }
+
+      .header-actions,
+      .toolbar,
+      .btn-delete,
+      .qty-btn,
+      .back-link {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+        color: black;
+      }
+
+      .table-panel,
+      .stat {
+        box-shadow: none;
+        border-color: #ccc;
+      }
+
+      .guest-table tbody tr {
+        break-inside: avoid;
+      }
+
+      .field,
+      .invite-check {
+        border: none;
+        background: transparent;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .summary {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="sticky-top">
+      <div class="header-row">
+        <div class="title-block">
+          <a class="back-link" href="../index.html">← Back to admin</a>
+          <h1>Guest Invite Tracker</h1>
+          <p>Manage families, invitations, and RSVPs in one place.</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn" id="theme-toggle" aria-pressed="false">Dark mode</button>
+          <button type="button" class="btn" id="export-csv">Export CSV</button>
+          <button type="button" class="btn btn-primary" id="add-family">+ Add row</button>
+        </div>
+      </div>
+
+      <section class="summary" aria-label="Guest summary" id="summary"></section>
+    </div>
+
+    <section class="toolbar" aria-label="Filters and search">
+      <div class="search-row">
+        <div class="search-wrap">
+          <label class="sr-only" for="search">Search by person or family name</label>
+          <input type="search" id="search" placeholder="Search by person or family name…" autocomplete="off">
+        </div>
+        <div class="toggles">
+          <label class="toggle" id="toggle-invited">
+            <input type="checkbox" id="invited-only">
+            <span>Invitation sent only</span>
+          </label>
+          <label class="toggle" id="toggle-pending">
+            <input type="checkbox" id="pending-only">
+            <span>Pending RSVP only</span>
+          </label>
+          <button type="button" class="btn" id="reset-filters">Reset filters</button>
+        </div>
+      </div>
+
+      <div class="pills" role="group" aria-label="Category filter" id="category-pills"></div>
+    </section>
+
+    <section aria-label="Guest families">
+      <div class="list-toolbar">
+        <h2>Guest list</h2>
+        <button type="button" class="btn btn-primary" id="add-row">+ Add row</button>
+      </div>
+      <div class="table-panel" id="guest-list">
+        <p class="empty">Loading…</p>
+      </div>
+      <div class="list-footer">
+        <button type="button" class="btn btn-primary" id="add-row-bottom">+ Add row</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var CATEGORIES = ["Friends", "Office HESTA", "Office AKQA", "Business"];
+      var RSVP_OPTIONS = ["Pending", "Attending", "Declined"];
+
+      var seedData = [
+        { category: "Friends", familyUnit: "Ram family", people: "Ram, Shweta", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Ayush family", people: "Ayush, Ruchi, Ayush’s mom, 1 kid", adults: 3, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Deepankar family", people: "Deepankar, Vinni", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Kritika family", people: "Kritika, Ankur, 1 infant", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Balram family", people: "Balram, Toshi", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Prateek family", people: "Prateek, Shiikha", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Mohit family", people: "Mohit, Swati, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Friends", familyUnit: "Nitesh family", people: "Nitesh, Ptiyanka, Amaira", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Sarah", people: "Sarah", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Jackson family", people: "Jackson, Jackson’s wife, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Tom", people: "Tom", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Ashley family", people: "Ashley, Ashley’s husband, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Jess", people: "Jess", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Kate", people: "Kate", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Michal family", people: "Michal see, Michal wife", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Nikolai", people: "Nikolai", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Jessen family", people: "Jessen, Jessen wife, 1 kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office HESTA", familyUnit: "Jebin family", people: "Jebin, Jebin wife, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Kristina", people: "Kristina", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Don family", people: "Don, Don’s husband, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Luch family", people: "Luch, Camila", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Bennor family", people: "Bennor, Sonia, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Khusboo family", people: "Khusboo, husband, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Saroja family", people: "Saroja, kid", adults: 1, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Shree family", people: "Shree, kid", adults: 1, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Office AKQA", familyUnit: "Ben Lau family", people: "Ben Lau, Ben’s wife, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Business", familyUnit: "Sonu Bal family", people: "Sonu Bal, Bal, Amardeep", adults: 3, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Business", familyUnit: "Deniel", people: "Deniel", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Business", familyUnit: "Rahul", people: "Rahul", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
+        { category: "Business", familyUnit: "Kapil family", people: "Kapil, Kapil’s wife, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" }
+      ];
+
+      var nextId = 1;
+      var guests = seedData.map(function (row) {
+        return Object.assign({ id: nextId++ }, row);
+      });
+
+      var filters = {
+        category: "All",
+        search: "",
+        invitedOnly: false,
+        pendingOnly: false
+      };
+
+      var els = {
+        list: document.getElementById("guest-list"),
+        summary: document.getElementById("summary"),
+        pills: document.getElementById("category-pills"),
+        search: document.getElementById("search"),
+        invitedOnly: document.getElementById("invited-only"),
+        pendingOnly: document.getElementById("pending-only"),
+        toggleInvited: document.getElementById("toggle-invited"),
+        togglePending: document.getElementById("toggle-pending"),
+        resetFilters: document.getElementById("reset-filters"),
+        addFamily: document.getElementById("add-family"),
+        addRow: document.getElementById("add-row"),
+        addRowBottom: document.getElementById("add-row-bottom"),
+        exportCsv: document.getElementById("export-csv"),
+        themeToggle: document.getElementById("theme-toggle")
+      };
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeCount(value) {
+        var n = parseInt(value, 10);
+        if (isNaN(n) || n < 0) return 0;
+        return n;
+      }
+
+      function getFilteredRows() {
+        var query = filters.search.trim().toLowerCase();
+
+        return guests.filter(function (row) {
+          if (filters.category !== "All" && row.category !== filters.category) {
+            return false;
+          }
+          if (filters.invitedOnly && !row.invited) {
+            return false;
+          }
+          if (filters.pendingOnly && row.rsvpStatus !== "Pending") {
+            return false;
+          }
+          if (query) {
+            var haystack = (row.familyUnit + " " + row.people).toLowerCase();
+            if (haystack.indexOf(query) === -1) return false;
+          }
+          return true;
+        });
+      }
+
+      function getSummary(rows) {
+        var source = rows || guests;
+        var families = source.length;
+        var adults = 0;
+        var kids = 0;
+        var invited = 0;
+        var pending = 0;
+
+        source.forEach(function (row) {
+          adults += normalizeCount(row.adults);
+          kids += normalizeCount(row.kids);
+          if (row.invited) invited += 1;
+          if (row.rsvpStatus === "Pending") pending += 1;
+        });
+
+        return {
+          families: families,
+          adults: adults,
+          kids: kids,
+          guests: adults + kids,
+          invited: invited,
+          pending: pending
+        };
+      }
+
+      function findRow(id) {
+        for (var i = 0; i < guests.length; i++) {
+          if (guests[i].id === id) return guests[i];
+        }
+        return null;
+      }
+
+      function applyFieldValue(row, field, value) {
+        if (field === "adults" || field === "kids") {
+          row[field] = normalizeCount(value);
+        } else if (field === "invited") {
+          row.invited = Boolean(value);
+        } else if (field === "category") {
+          row.category = CATEGORIES.indexOf(value) >= 0 ? value : CATEGORIES[0];
+        } else if (field === "rsvpStatus") {
+          row.rsvpStatus = RSVP_OPTIONS.indexOf(value) >= 0 ? value : "Pending";
+        } else {
+          row[field] = value;
+        }
+      }
+
+      function updateRow(id, field, value, options) {
+        var row = findRow(id);
+        if (!row) return;
+
+        applyFieldValue(row, field, value);
+
+        var opts = options || {};
+        if (opts.soft) {
+          renderSummary();
+          return;
+        }
+
+        render();
+      }
+
+      function addFamily() {
+        guests.unshift({
+          id: nextId++,
+          category: CATEGORIES[0],
+          familyUnit: "",
+          people: "",
+          adults: 0,
+          kids: 0,
+          invited: false,
+          rsvpStatus: "Pending",
+          notes: ""
+        });
+        render();
+
+        var firstInput = els.list.querySelector('[data-field="familyUnit"]');
+        if (firstInput) firstInput.focus();
+      }
+
+      function deleteRow(id) {
+        var row = findRow(id);
+        if (!row) return;
+
+        var label = row.familyUnit && row.familyUnit.trim()
+          ? row.familyUnit.trim()
+          : "this family";
+
+        if (!window.confirm("Delete " + label + "? This cannot be undone.")) {
+          return;
+        }
+
+        guests = guests.filter(function (item) {
+          return item.id !== id;
+        });
+        render();
+      }
+
+      function csvEscape(value) {
+        var text = String(value == null ? "" : value);
+        if (/[",\n\r]/.test(text)) {
+          return '"' + text.replace(/"/g, '""') + '"';
+        }
+        return text;
+      }
+
+      function exportCSV() {
+        var rows = getFilteredRows();
+        var headers = [
+          "id",
+          "category",
+          "familyUnit",
+          "people",
+          "adults",
+          "kids",
+          "invitationSent",
+          "rsvpStatus",
+          "notes"
+        ];
+
+        var lines = [headers.join(",")];
+        rows.forEach(function (row) {
+          lines.push([
+            csvEscape(row.id),
+            csvEscape(row.category),
+            csvEscape(row.familyUnit),
+            csvEscape(row.people),
+            csvEscape(row.adults),
+            csvEscape(row.kids),
+            csvEscape(row.invited ? "Yes" : "No"),
+            csvEscape(row.rsvpStatus),
+            csvEscape(row.notes)
+          ].join(","));
+        });
+
+        var blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "guest-invite-tracker.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      function renderSummary() {
+        var summary = getSummary(getFilteredRows());
+        var items = [
+          { label: "Total Families", value: summary.families },
+          { label: "Total Adults", value: summary.adults },
+          { label: "Total Kids", value: summary.kids },
+          { label: "Total Guests", value: summary.guests },
+          { label: "Invitation Sent", value: summary.invited },
+          { label: "Pending RSVPs", value: summary.pending }
+        ];
+
+        els.summary.innerHTML = items.map(function (item) {
+          return (
+            '<div class="stat">' +
+              '<span class="stat-label">' + escapeHtml(item.label) + "</span>" +
+              '<span class="stat-value">' + escapeHtml(item.value) + "</span>" +
+            "</div>"
+          );
+        }).join("");
+      }
+
+      function renderPills() {
+        var options = ["All"].concat(CATEGORIES);
+        els.pills.innerHTML = options.map(function (category) {
+          var pressed = filters.category === category ? "true" : "false";
+          return (
+            '<button type="button" class="pill" data-category="' +
+            escapeHtml(category) +
+            '" aria-pressed="' + pressed + '">' +
+            escapeHtml(category) +
+            "</button>"
+          );
+        }).join("");
+      }
+
+      function categoryOptions(selected) {
+        return CATEGORIES.map(function (category) {
+          return (
+            '<option value="' + escapeHtml(category) + '"' +
+            (category === selected ? " selected" : "") +
+            ">" + escapeHtml(category) + "</option>"
+          );
+        }).join("");
+      }
+
+      function rsvpOptions(selected) {
+        return RSVP_OPTIONS.map(function (status) {
+          return (
+            '<option value="' + escapeHtml(status) + '"' +
+            (status === selected ? " selected" : "") +
+            ">" + escapeHtml(status) + "</option>"
+          );
+        }).join("");
+      }
+
+      function renderRow(row) {
+        var id = row.id;
+        var inviteLabel = row.invited ? "Sent" : "No";
+        return (
+          '<tr class="' + (row.invited ? "is-invited" : "") + '" data-id="' + id + '">' +
+            '<td>' +
+              '<label class="sr-only" for="category-' + id + '">Category</label>' +
+              '<select class="field" id="category-' + id + '" data-field="category">' +
+                categoryOptions(row.category) +
+              "</select>" +
+            "</td>" +
+            '<td>' +
+              '<label class="sr-only" for="family-' + id + '">Family</label>' +
+              '<input class="field" id="family-' + id + '" data-field="familyUnit" type="text" value="' +
+                escapeHtml(row.familyUnit) + '" placeholder="Family">' +
+            "</td>" +
+            '<td>' +
+              '<label class="sr-only" for="people-' + id + '">People</label>' +
+              '<input class="field" id="people-' + id + '" data-field="people" type="text" value="' +
+                escapeHtml(row.people) + '" placeholder="Names">' +
+            "</td>" +
+            '<td>' +
+              '<div class="qty" role="group" aria-label="Adults">' +
+                '<button type="button" class="qty-btn" data-action="dec" data-field="adults" aria-label="Decrease adults">−</button>' +
+                '<input class="field" data-field="adults" type="number" min="0" inputmode="numeric" value="' +
+                  escapeHtml(row.adults) + '" aria-label="Adults count">' +
+                '<button type="button" class="qty-btn" data-action="inc" data-field="adults" aria-label="Increase adults">+</button>' +
+              "</div>" +
+            "</td>" +
+            '<td>' +
+              '<div class="qty" role="group" aria-label="Kids">' +
+                '<button type="button" class="qty-btn" data-action="dec" data-field="kids" aria-label="Decrease kids">−</button>' +
+                '<input class="field" data-field="kids" type="number" min="0" inputmode="numeric" value="' +
+                  escapeHtml(row.kids) + '" aria-label="Kids count">' +
+                '<button type="button" class="qty-btn" data-action="inc" data-field="kids" aria-label="Increase kids">+</button>' +
+              "</div>" +
+            "</td>" +
+            '<td class="invite-cell">' +
+              '<label class="invite-check' + (row.invited ? " is-on" : "") + '" for="invited-' + id + '" title="' +
+                (row.invited ? "Invitation sent" : "Invitation not sent") + '">' +
+                '<input id="invited-' + id + '" data-field="invited" type="checkbox"' +
+                  (row.invited ? " checked" : "") +
+                  ' aria-label="Invitation sent for ' + escapeHtml(row.familyUnit || "family") + '">' +
+                '<span class="status-pill">' + inviteLabel + "</span>" +
+              "</label>" +
+            "</td>" +
+            '<td>' +
+              '<label class="sr-only" for="rsvp-' + id + '">RSVP</label>' +
+              '<select class="field" id="rsvp-' + id + '" data-field="rsvpStatus">' +
+                rsvpOptions(row.rsvpStatus) +
+              "</select>" +
+            "</td>" +
+            '<td>' +
+              '<label class="sr-only" for="notes-' + id + '">Notes</label>' +
+              '<input class="field" id="notes-' + id + '" data-field="notes" type="text" value="' +
+                escapeHtml(row.notes) + '" placeholder="Notes">' +
+            "</td>" +
+            '<td>' +
+              '<button type="button" class="btn btn-delete" data-action="delete" aria-label="Delete ' +
+                escapeHtml(row.familyUnit || "family") + '" title="Delete">×</button>' +
+            "</td>" +
+          "</tr>"
+        );
+      }
+
+      function renderList() {
+        var rows = getFilteredRows();
+        if (!rows.length) {
+          els.list.innerHTML = '<p class="empty">No families match the current filters.</p>';
+          return;
+        }
+
+        els.list.innerHTML =
+          '<table class="guest-table">' +
+            "<colgroup>" +
+              '<col class="col-cat">' +
+              '<col class="col-family">' +
+              '<col class="col-people">' +
+              '<col class="col-adults">' +
+              '<col class="col-kids">' +
+              '<col class="col-invite">' +
+              '<col class="col-rsvp">' +
+              '<col class="col-notes">' +
+              '<col class="col-actions">' +
+            "</colgroup>" +
+            "<thead>" +
+              "<tr>" +
+                "<th scope=\"col\">Category</th>" +
+                "<th scope=\"col\">Family</th>" +
+                "<th scope=\"col\">People</th>" +
+                "<th scope=\"col\">Adults</th>" +
+                "<th scope=\"col\">Kids</th>" +
+                "<th scope=\"col\">Sent</th>" +
+                "<th scope=\"col\">RSVP</th>" +
+                "<th scope=\"col\">Notes</th>" +
+                "<th scope=\"col\"><span class=\"sr-only\">Delete</span></th>" +
+              "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+              rows.map(renderRow).join("") +
+            "</tbody>" +
+          "</table>";
+      }
+
+      function syncToggleStyles() {
+        els.toggleInvited.classList.toggle("is-active", filters.invitedOnly);
+        els.togglePending.classList.toggle("is-active", filters.pendingOnly);
+      }
+
+      function render() {
+        renderPills();
+        renderSummary();
+        renderList();
+        syncToggleStyles();
+      }
+
+      function getRowId(element) {
+        var row = element.closest("tr[data-id]");
+        if (!row) return null;
+        return parseInt(row.getAttribute("data-id"), 10);
+      }
+
+      els.list.addEventListener("input", function (event) {
+        var target = event.target;
+        var field = target.getAttribute("data-field");
+        if (!field) return;
+
+        var id = getRowId(target);
+        if (!id) return;
+
+        if (
+          field === "notes" ||
+          field === "familyUnit" ||
+          field === "people" ||
+          field === "adults" ||
+          field === "kids"
+        ) {
+          updateRow(id, field, target.value, { soft: true });
+        }
+      });
+
+      els.list.addEventListener("change", function (event) {
+        var target = event.target;
+        var field = target.getAttribute("data-field");
+        if (!field) return;
+
+        var id = getRowId(target);
+        if (!id) return;
+
+        if (field === "category" || field === "rsvpStatus") {
+          updateRow(id, field, target.value);
+        } else if (field === "invited") {
+          updateRow(id, field, target.checked);
+        } else if (field === "adults" || field === "kids") {
+          updateRow(id, field, target.value);
+        }
+      });
+
+      els.list.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-action]");
+        if (!button) return;
+
+        var id = getRowId(button);
+        if (!id) return;
+
+        var action = button.getAttribute("data-action");
+        var field = button.getAttribute("data-field");
+        var row = findRow(id);
+        if (!row) return;
+
+        if (action === "delete") {
+          deleteRow(id);
+          return;
+        }
+
+        if ((action === "inc" || action === "dec") && (field === "adults" || field === "kids")) {
+          var next = normalizeCount(row[field]) + (action === "inc" ? 1 : -1);
+          if (next < 0) next = 0;
+          updateRow(id, field, next);
+        }
+      });
+
+      els.pills.addEventListener("click", function (event) {
+        var pill = event.target.closest("[data-category]");
+        if (!pill) return;
+        filters.category = pill.getAttribute("data-category");
+        render();
+      });
+
+      els.search.addEventListener("input", function () {
+        filters.search = els.search.value;
+        render();
+      });
+
+      els.invitedOnly.addEventListener("change", function () {
+        filters.invitedOnly = els.invitedOnly.checked;
+        render();
+      });
+
+      els.pendingOnly.addEventListener("change", function () {
+        filters.pendingOnly = els.pendingOnly.checked;
+        render();
+      });
+
+      els.resetFilters.addEventListener("click", function () {
+        filters.category = "All";
+        filters.search = "";
+        filters.invitedOnly = false;
+        filters.pendingOnly = false;
+        els.search.value = "";
+        els.invitedOnly.checked = false;
+        els.pendingOnly.checked = false;
+        render();
+      });
+
+      els.addFamily.addEventListener("click", addFamily);
+      els.addRow.addEventListener("click", addFamily);
+      els.addRowBottom.addEventListener("click", addFamily);
+      els.exportCsv.addEventListener("click", exportCSV);
+
+      els.themeToggle.addEventListener("click", function () {
+        var root = document.documentElement;
+        var isDark = root.getAttribute("data-theme") === "dark";
+        if (isDark) {
+          root.removeAttribute("data-theme");
+          els.themeToggle.setAttribute("aria-pressed", "false");
+          els.themeToggle.textContent = "Dark mode";
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#f7f5f2");
+        } else {
+          root.setAttribute("data-theme", "dark");
+          els.themeToggle.setAttribute("aria-pressed", "true");
+          els.themeToggle.textContent = "Light mode";
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#161513");
+        }
+      });
+
+      // Expose required functions for maintainability / debugging
+      window.GuestTracker = {
+        render: render,
+        getFilteredRows: getFilteredRows,
+        getSummary: getSummary,
+        addFamily: addFamily,
+        updateRow: updateRow,
+        deleteRow: deleteRow,
+        exportCSV: exportCSV
+      };
+
+      render();
+    })();
+  </script>
+</body>
+</html>
