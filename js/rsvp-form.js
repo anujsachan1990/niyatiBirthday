@@ -178,7 +178,7 @@ function initRSVPForm() {
     event.preventDefault();
 
     const name = nameInput?.value.trim();
-    const email = emailInput?.value.trim();
+    const email = emailInput?.value.trim() || null;
     const message = messageInput?.value.trim() || null;
 
     if (!name) {
@@ -187,8 +187,8 @@ function initRSVPForm() {
       return;
     }
 
-    if (!email) {
-      showStatus('Please enter your email.', 'error');
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus('Please enter a valid email, or leave it blank.', 'error');
       emailInput?.focus();
       return;
     }

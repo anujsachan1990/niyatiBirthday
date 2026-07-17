@@ -94,7 +94,7 @@ function renderTable(rows, filter) {
       (row) => `
         <tr class="border-t border-[#1F1D1B]/10">
           <td class="px-4 py-4 font-body">${escapeHtml(row.name)}</td>
-          <td class="px-4 py-4 font-mono-nb text-sm">${escapeHtml(row.email)}</td>
+          <td class="px-4 py-4 font-mono-nb text-sm">${row.email ? escapeHtml(row.email) : '—'}</td>
           <td class="px-4 py-4">
             <span class="inline-flex px-3 py-1 rounded-full nb-border text-xs font-mono-nb uppercase tracking-[0.2em] ${
               row.attending === 'yes' ? 'bg-[#C1D5C9]' : 'bg-[#F5E3B8]'
@@ -137,7 +137,7 @@ function renderTable(rows, filter) {
             <div class="admin-card-meta">
               <div class="admin-card-row">
                 <p class="admin-card-label">Email</p>
-                <p class="admin-card-value font-mono-nb text-sm">${escapeHtml(row.email)}</p>
+                <p class="admin-card-value font-mono-nb text-sm">${row.email ? escapeHtml(row.email) : '—'}</p>
               </div>
               <div class="admin-card-row">
                 <p class="admin-card-label">Guests</p>
