@@ -280,8 +280,19 @@
   }
 
   function addFamily() {
+    var newId = createId();
+
+    // Clear filters that would hide a blank new row
+    filters.category = "All";
+    filters.search = "";
+    filters.invitedOnly = false;
+    filters.pendingOnly = false;
+    if (els.search) els.search.value = "";
+    if (els.invitedOnly) els.invitedOnly.checked = false;
+    if (els.pendingOnly) els.pendingOnly.checked = false;
+
     guests.unshift({
-      id: createId(),
+      id: newId,
       category: CATEGORIES[0],
       familyUnit: "",
       people: "",
@@ -294,8 +305,12 @@
     setDirty(true);
     render();
 
-    var firstInput = els.list.querySelector('[data-field="familyUnit"]');
-    if (firstInput) firstInput.focus();
+    var newRow = els.list.querySelector('tr[data-id="' + newId + '"]');
+    var familyInput = newRow && newRow.querySelector('[data-field="familyUnit"]');
+    if (familyInput) {
+      familyInput.focus();
+      familyInput.select();
+    }
   }
 
   function deleteRow(id) {
