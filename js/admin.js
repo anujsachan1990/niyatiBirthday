@@ -93,19 +93,19 @@ function renderTable(rows, filter) {
     .map(
       (row) => `
         <tr class="border-t border-[#1F1D1B]/10">
-          <td class="px-4 py-4 font-body">${escapeHtml(row.name)}</td>
-          <td class="px-4 py-4 font-mono-nb text-sm">${row.email ? escapeHtml(row.email) : '—'}</td>
-          <td class="px-4 py-4">
+          <td class="font-body">${escapeHtml(row.name)}</td>
+          <td class="font-mono-nb text-sm">${row.email ? escapeHtml(row.email) : '—'}</td>
+          <td>
             <span class="inline-flex px-3 py-1 rounded-full nb-border text-xs font-mono-nb uppercase tracking-[0.2em] ${
               row.attending === 'yes' ? 'bg-[#C1D5C9]' : 'bg-[#F5E3B8]'
             }">
               ${row.attending === 'yes' ? 'Coming' : 'Declined'}
             </span>
           </td>
-          <td class="px-4 py-4 font-heading text-lg text-center whitespace-nowrap">${guestBreakdown(row)}</td>
-          <td class="px-4 py-4 font-body text-sm text-[#5C564F] max-w-xs">${row.message ? escapeHtml(row.message) : '—'}</td>
-          <td class="px-4 py-4 font-mono-nb text-xs text-[#5C564F] whitespace-nowrap">${formatDate(row.created_at)}</td>
-          <td class="px-4 py-4 text-center">
+          <td class="font-heading text-lg">${guestBreakdown(row)}</td>
+          <td class="font-body text-sm text-[#5C564F]">${row.message ? escapeHtml(row.message) : '—'}</td>
+          <td class="font-mono-nb text-xs text-[#5C564F]">${formatDate(row.created_at)}</td>
+          <td>
             <button
               type="button"
               class="admin-delete-btn"
