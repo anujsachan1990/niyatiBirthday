@@ -8,21 +8,86 @@ function initRSVPForm() {
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
   const attendingNo = form.querySelector('[data-testid="rsvp-attending-no"]');
-  const guestCountInput = form.querySelector('[data-testid="rsvp-guest-count"]');
+  const adultCountInput = form.querySelector('[data-testid="rsvp-adult-count"]');
+  const kidCountInput = form.querySelector('[data-testid="rsvp-kid-count"]');
+  const adultDropdown = form.querySelector('[data-testid="rsvp-adult-dropdown"]');
+  const kidDropdown = form.querySelector('[data-testid="rsvp-kid-dropdown"]');
   const guestCountSection = form.querySelector('[data-testid="rsvp-guest-count-section"]');
-  const guestCountButtons = form.querySelectorAll('[data-testid^="rsvp-guest-count-option"]');
   const messageInput = form.querySelector('[data-testid="rsvp-message"]');
   const submitButton = form.querySelector('[data-testid="rsvp-submit"]');
 
   let attending = 'yes';
-  let guestCount = 1;
+  let adultCount = 1;
+  let kidCount = 0;
 
   const selectedAttendingClasses = ['is-selected'];
   const unselectedAttendingClasses = [];
-  const selectedGuestClasses = ['is-selected'];
-  const unselectedGuestClasses = [];
 
-  const MAX_GUEST_COUNT = 4;
+  const MAX_ADULT_COUNT = 4;
+  const MAX_KID_COUNT = 4;
+
+  function closeAllDropdowns(except) {
+    form.querySelectorAll('[data-rsvp-dropdown].is-open').forEach((dropdown) => {
+      if (dropdown === except) return;
+      setDropdownOpen(dropdown, false);
+    });
+  }
+
+  function setDropdownOpen(dropdown, open) {
+    if (!dropdown) return;
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    const menu = dropdown.querySelector('[data-rsvp-dropdown-menu]');
+    dropdown.classList.toggle('is-open', open);
+    if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (menu) menu.hidden = !open;
+  }
+
+  function setDropdownValue(dropdown, hiddenInput, value) {
+    if (!dropdown || !hiddenInput) return;
+    const options = dropdown.querySelectorAll('[role="option"]');
+    const match = Array.from(options).find((option) => option.dataset.value === String(value));
+    if (!match) return;
+
+    hiddenInput.value = String(value);
+    const label = dropdown.querySelector('[data-rsvp-dropdown-label]');
+    if (label) label.textContent = match.textContent.trim();
+
+    options.forEach((option) => {
+      option.setAttribute('aria-selected', option === match ? 'true' : 'false');
+    });
+  }
+
+  function setDropdownDisabled(dropdown, disabled) {
+    if (!dropdown) return;
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    dropdown.classList.toggle('is-disabled', disabled);
+    if (trigger) trigger.disabled = disabled;
+    if (disabled) setDropdownOpen(dropdown, false);
+  }
+
+  function initDropdown(dropdown, hiddenInput, onChange) {
+    if (!dropdown || !hiddenInput) return;
+
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    const menu = dropdown.querySelector('[data-rsvp-dropdown-menu]');
+    if (!trigger || !menu) return;
+
+    trigger.addEventListener('click', () => {
+      if (trigger.disabled) return;
+      const willOpen = !dropdown.classList.contains('is-open');
+      closeAllDropdowns(dropdown);
+      setDropdownOpen(dropdown, willOpen);
+    });
+
+    menu.addEventListener('click', (event) => {
+      const option = event.target.closest('[role="option"]');
+      if (!option || !menu.contains(option)) return;
+      const value = Number(option.dataset.value);
+      onChange(value);
+      setDropdownOpen(dropdown, false);
+      trigger.focus();
+    });
+  }
 
   function setAttending(value) {
     attending = value;
@@ -41,23 +106,27 @@ function initRSVPForm() {
       guestCountSection.classList.toggle('is-collapsed', value === 'no');
     }
 
+    setDropdownDisabled(adultDropdown, value === 'no');
+    setDropdownDisabled(kidDropdown, value === 'no');
+
     if (value === 'no') {
-      setGuestCount(0);
-    } else if (guestCount < 1) {
-      setGuestCount(1);
+      adultCount = 0;
+      kidCount = 0;
+      closeAllDropdowns();
+    } else if (adultCount < 1) {
+      setAdultCount(1);
+      setKidCount(0);
     }
   }
 
-  function setGuestCount(value) {
-    guestCount = Math.min(Math.max(value, 0), MAX_GUEST_COUNT);
-    if (guestCountInput) guestCountInput.value = String(guestCount);
+  function setAdultCount(value) {
+    adultCount = Math.min(Math.max(value, 1), MAX_ADULT_COUNT);
+    setDropdownValue(adultDropdown, adultCountInput, adultCount);
+  }
 
-    guestCountButtons.forEach((button) => {
-      const count = Number(button.textContent.trim());
-      const isSelected = count === value;
-      button.classList.remove(...selectedGuestClasses, ...unselectedGuestClasses);
-      button.classList.add(...(isSelected ? selectedGuestClasses : unselectedGuestClasses));
-    });
+  function setKidCount(value) {
+    kidCount = Math.min(Math.max(value, 0), MAX_KID_COUNT);
+    setDropdownValue(kidDropdown, kidCountInput, kidCount);
   }
 
   function showStatus(message, type) {
@@ -89,14 +158,21 @@ function initRSVPForm() {
   attendingYes?.addEventListener('click', () => setAttending('yes'));
   attendingNo?.addEventListener('click', () => setAttending('no'));
 
-  guestCountButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      setGuestCount(Number(button.textContent.trim()));
-    });
+  initDropdown(adultDropdown, adultCountInput, setAdultCount);
+  initDropdown(kidDropdown, kidCountInput, setKidCount);
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-rsvp-dropdown]')) return;
+    closeAllDropdowns();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAllDropdowns();
   });
 
   setAttending('yes');
-  setGuestCount(1);
+  setAdultCount(1);
+  setKidCount(0);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -117,8 +193,13 @@ function initRSVPForm() {
       return;
     }
 
-    if (attending === 'yes' && (guestCount < 1 || guestCount > MAX_GUEST_COUNT)) {
-      showStatus(`Please select between 1 and ${MAX_GUEST_COUNT} guests.`, 'error');
+    if (attending === 'yes' && (adultCount < 1 || adultCount > MAX_ADULT_COUNT)) {
+      showStatus(`Please select between 1 and ${MAX_ADULT_COUNT} adults.`, 'error');
+      return;
+    }
+
+    if (attending === 'yes' && (kidCount < 0 || kidCount > MAX_KID_COUNT)) {
+      showStatus(`Please select between 0 and ${MAX_KID_COUNT} kids.`, 'error');
       return;
     }
 
@@ -128,6 +209,9 @@ function initRSVPForm() {
       return;
     }
 
+    const adults = attending === 'yes' ? adultCount : 0;
+    const kids = attending === 'yes' ? kidCount : 0;
+
     submitButton.disabled = true;
     showStatus('Sending your RSVP...', 'info');
 
@@ -135,7 +219,9 @@ function initRSVPForm() {
       name,
       email,
       attending,
-      guest_count: attending === 'yes' ? guestCount : 0,
+      adult_count: adults,
+      kid_count: kids,
+      guest_count: adults + kids,
       message,
     });
 
@@ -147,8 +233,10 @@ function initRSVPForm() {
       return;
     }
 
+    const wasAttending = attending === 'yes';
+
     showStatus(
-      attending === 'yes'
+      wasAttending
         ? 'Thank you! We cannot wait to celebrate with you.'
         : 'Thank you for letting us know. You will be missed.',
       'success'
@@ -156,9 +244,10 @@ function initRSVPForm() {
 
     form.reset();
     setAttending('yes');
-    setGuestCount(1);
+    setAdultCount(1);
+    setKidCount(0);
 
-    if (typeof createConfetti === 'function' && attending === 'yes') {
+    if (typeof createConfetti === 'function' && wasAttending) {
       createConfetti();
     }
   });

@@ -7,8 +7,11 @@ create table if not exists public.rsvps (
   name text not null,
   email text not null,
   attending text not null check (attending in ('yes', 'no')),
-  guest_count int not null default 1 check (guest_count between 0 and 6),
-  message text
+  guest_count int not null default 1 check (guest_count between 0 and 8),
+  adult_count int not null default 1 check (adult_count between 0 and 4),
+  kid_count int not null default 0 check (kid_count between 0 and 4),
+  message text,
+  constraint rsvps_guest_count_matches_parts check (guest_count = adult_count + kid_count)
 );
 
 create index if not exists rsvps_created_at_idx on public.rsvps (created_at desc);

@@ -99,10 +99,12 @@ Deploy the `dist/` folder. Either set `SUPABASE_URL` and `SUPABASE_ANON_KEY` bef
 |------|---------|
 | Total responses | Every RSVP submitted |
 | Households coming | Answered "Yes, joyfully" |
-| Total guests | Sum of guest counts for yes responses |
+| Adults | Sum of adult counts for yes responses |
+| Kids | Sum of kid counts for yes responses |
+| Total guests | Adults + kids for yes responses |
 | Cannot attend | Answered "Regretfully no" |
 
-The table lists name, email, status, guests, message, and submission time. Use the filter for coming / declined only.
+The table lists name, email, status, adults/kids, message, and submission time. Use the filter for coming / declined only.
 
 ## Troubleshooting
 

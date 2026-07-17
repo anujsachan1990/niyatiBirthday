@@ -50,7 +50,7 @@ A beautiful, interactive birthday invitation website with smooth animations, cou
 ### 9. **RSVP Functionality** 💌
 - RSVP buttons throughout the site
 - Form with validation
-- Guest count selector
+- Guest count selector (adults + kids)
 - Message input for Niyati
 
 ### 10. **Confetti Effect** 🎊 (Optional)

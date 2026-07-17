@@ -21,12 +21,27 @@ function summarizeRsvps(rows) {
   const attending = rows.filter((row) => row.attending === 'yes');
   const declined = rows.filter((row) => row.attending === 'no');
 
+  const totalAdults = attending.reduce((sum, row) => sum + (row.adult_count || 0), 0);
+  const totalKids = attending.reduce((sum, row) => sum + (row.kid_count || 0), 0);
+
   return {
     totalResponses: rows.length,
     attendingHouseholds: attending.length,
-    totalGuests: attending.reduce((sum, row) => sum + (row.guest_count || 0), 0),
+    totalAdults,
+    totalKids,
+    totalGuests: attending.reduce(
+      (sum, row) => sum + (row.guest_count ?? (row.adult_count || 0) + (row.kid_count || 0)),
+      0
+    ),
     declined: declined.length,
   };
+}
+
+function guestBreakdown(row) {
+  if (row.attending !== 'yes') return '—';
+  const adults = row.adult_count || 0;
+  const kids = row.kid_count || 0;
+  return `${adults} adult${adults === 1 ? '' : 's'} · ${kids} kid${kids === 1 ? '' : 's'}`;
 }
 
 function renderStats(stats) {
@@ -36,6 +51,8 @@ function renderStats(stats) {
   const cards = [
     { label: 'Total responses', value: stats.totalResponses },
     { label: 'Households coming', value: stats.attendingHouseholds },
+    { label: 'Adults', value: stats.totalAdults },
+    { label: 'Kids', value: stats.totalKids },
     { label: 'Total guests', value: stats.totalGuests },
     { label: 'Cannot attend', value: stats.declined },
   ];
@@ -85,7 +102,7 @@ function renderTable(rows, filter) {
               ${row.attending === 'yes' ? 'Coming' : 'Declined'}
             </span>
           </td>
-          <td class="px-4 py-4 font-heading text-xl text-center">${row.attending === 'yes' ? row.guest_count : '—'}</td>
+          <td class="px-4 py-4 font-heading text-lg text-center whitespace-nowrap">${guestBreakdown(row)}</td>
           <td class="px-4 py-4 font-body text-sm text-[#5C564F] max-w-xs">${row.message ? escapeHtml(row.message) : '—'}</td>
           <td class="px-4 py-4 font-mono-nb text-xs text-[#5C564F] whitespace-nowrap">${formatDate(row.created_at)}</td>
           <td class="px-4 py-4 text-center">
@@ -124,7 +141,7 @@ function renderTable(rows, filter) {
               </div>
               <div class="admin-card-row">
                 <p class="admin-card-label">Guests</p>
-                <p class="admin-card-value font-heading text-xl">${row.attending === 'yes' ? row.guest_count : '—'}</p>
+                <p class="admin-card-value font-heading text-xl">${guestBreakdown(row)}</p>
               </div>
               <div class="admin-card-row">
                 <p class="admin-card-label">Message</p>
@@ -195,7 +212,7 @@ async function deleteRsvp(supabase, id) {
 async function loadRsvps(supabase, filter = 'all') {
   const { data, error } = await supabase
     .from('rsvps')
-    .select('id, created_at, name, email, attending, guest_count, message')
+    .select('id, created_at, name, email, attending, guest_count, adult_count, kid_count, message')
     .order('created_at', { ascending: false });
 
   if (error) throw error;
