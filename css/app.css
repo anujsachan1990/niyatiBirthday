@@ -537,21 +537,23 @@ body {
 }
 
 @media (max-width: 767px) {
-    /* While typing, let the sticky header scroll away so the field can sit above the keyboard */
-    body.rsvp-keyboard-open .site-header {
-        position: relative;
+    /* Always leave room to scroll fields above the keyboard — no focus-time layout jump */
+    #rsvp {
+        padding-bottom: min(42vh, 18rem);
+        overflow-anchor: none;
     }
 
     .rsvp-input,
-    .rsvp-textarea {
-        scroll-margin-top: 1.25rem;
-        scroll-margin-bottom: 40vh;
+    .rsvp-textarea,
+    .rsvp-dropdown-trigger {
+        scroll-margin-top: 1rem;
+        scroll-margin-bottom: 35vh;
     }
 
-    /* Extra room below the form so the focused field can scroll above the keyboard */
-    body.rsvp-keyboard-open #rsvp {
-        padding-bottom: min(50vh, 22rem);
-        overflow-anchor: none;
+    /* Keep open menus on-screen when space below is tight */
+    .rsvp-dropdown.is-open.is-drop-up .rsvp-dropdown-menu {
+        top: auto;
+        bottom: calc(100% + 0.4rem);
     }
 }
 
