@@ -2,8 +2,6 @@ function initRSVPForm() {
   const form = document.querySelector('[data-testid="rsvp-form"]');
   if (!form) return;
 
-  initMobileInputScroll(form);
-
   const nameInput = form.querySelector('[data-testid="rsvp-name"]');
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
@@ -250,96 +248,6 @@ function initRSVPForm() {
     if (typeof createConfetti === 'function' && wasAttending) {
       createConfetti();
     }
-  });
-}
-
-function initMobileInputScroll(form) {
-  const mobileQuery = window.matchMedia('(max-width: 767px)');
-  if (!mobileQuery.matches) return;
-
-  const header = document.querySelector('header');
-  let activeInput = null;
-  let revealTimer = null;
-
-  function getVisibleBounds() {
-    const viewport = window.visualViewport;
-    if (!viewport) {
-      const headerBottom = header?.getBoundingClientRect().bottom ?? 72;
-      return {
-        top: headerBottom + 12,
-        bottom: window.innerHeight - 24,
-      };
-    }
-
-    const headerBottom = header?.getBoundingClientRect().bottom ?? 72;
-    const top = Math.max(viewport.offsetTop + headerBottom, headerBottom) + 12;
-    const bottom = viewport.offsetTop + viewport.height - 16;
-
-    return { top, bottom };
-  }
-
-  function revealInput(input) {
-    if (!input || !mobileQuery.matches) return;
-
-    const field = input.closest('.rsvp-field') || input;
-    const { top, bottom } = getVisibleBounds();
-    const rect = field.getBoundingClientRect();
-
-    if (rect.top >= top && rect.bottom <= bottom) return;
-
-    const targetTop = Math.min(top, bottom - rect.height - 8);
-    const delta = rect.top - targetTop;
-
-    if (Math.abs(delta) > 4) {
-      window.scrollTo({
-        top: Math.max(0, window.scrollY + delta),
-        left: 0,
-        behavior: 'auto',
-      });
-    }
-  }
-
-  function scheduleReveal(input) {
-    window.clearTimeout(revealTimer);
-    revealTimer = window.setTimeout(() => revealInput(input), 400);
-  }
-
-  form.addEventListener(
-    'focusin',
-    (event) => {
-      const input = event.target.closest('input:not([type="hidden"]), textarea');
-      if (!input || !form.contains(input)) return;
-
-      activeInput = input;
-      document.body.classList.add('rsvp-input-active');
-      scheduleReveal(input);
-    },
-    true
-  );
-
-  form.addEventListener(
-    'focusout',
-    () => {
-      window.setTimeout(() => {
-        const focused = document.activeElement;
-        if (
-          focused &&
-          form.contains(focused) &&
-          focused.matches('input:not([type="hidden"]), textarea')
-        ) {
-          return;
-        }
-
-        activeInput = null;
-        document.body.classList.remove('rsvp-input-active');
-        window.clearTimeout(revealTimer);
-      }, 120);
-    },
-    true
-  );
-
-  window.visualViewport?.addEventListener('resize', () => {
-    if (activeInput) scheduleReveal(activeInput);
   });
 }
 

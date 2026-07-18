@@ -571,7 +571,7 @@ body {
 }
 
 .rsvp-field {
-    overflow-anchor: auto;
+    overflow-anchor: none;
 }
 
 .rsvp-section {
@@ -627,12 +627,6 @@ body {
     border-color: #1f1d1b;
     background: #fff;
     box-shadow: 0 0 0 3px rgba(193, 213, 201, 0.9);
-}
-
-@media (max-width: 767px) {
-    body.rsvp-input-active #rsvp {
-        padding-bottom: min(55vh, 24rem);
-    }
 }
 
 .rsvp-textarea {
