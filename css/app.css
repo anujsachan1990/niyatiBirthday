@@ -512,20 +512,20 @@
     font-weight: 500;
 }
 
-/* RSVP form — mobile UX */
+/* RSVP form */
 :root {
     --rsvp-header-offset: 4.75rem;
 }
 
 html {
     -webkit-text-size-adjust: 100%;
-    scroll-padding-top: var(--rsvp-header-offset);
 }
 
 body {
     overflow-x: clip;
 }
 
+/* Only for nav jumps to the section — not applied to form fields */
 #rsvp {
     scroll-margin-top: var(--rsvp-header-offset);
 }
@@ -565,10 +565,6 @@ body {
     gap: 0;
 }
 
-.rsvp-field {
-    overflow-anchor: none;
-}
-
 .rsvp-section {
     padding: 1.35rem 0;
     border-top: 1px solid rgba(31, 29, 27, 0.08);
@@ -606,7 +602,6 @@ body {
     line-height: 1.4;
     appearance: none;
     -webkit-appearance: none;
-    scroll-margin-top: var(--rsvp-header-offset);
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease,
@@ -803,7 +798,7 @@ body {
 
     #rsvp {
         padding-top: 2.75rem;
-        padding-bottom: min(36vh, 14rem);
+        padding-bottom: 2rem;
     }
 
     .rsvp-form-wrap {

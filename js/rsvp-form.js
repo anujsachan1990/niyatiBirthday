@@ -88,13 +88,13 @@ function initRSVPForm() {
 
     if (!name) {
       showStatus('Please enter your name.', 'error');
-      nameInput?.focus({ preventScroll: false });
+      nameInput?.focus({ preventScroll: true });
       return;
     }
 
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       showStatus('Please enter a valid email, or leave it blank.', 'error');
-      emailInput?.focus({ preventScroll: false });
+      emailInput?.focus({ preventScroll: true });
       return;
     }
 
