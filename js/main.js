@@ -307,24 +307,21 @@ function initParallax() {
 // 9. RSVP BUTTON HANDLERS
 // ============================================
 function initRSVPButtons() {
-  const rsvpButtons = document.querySelectorAll('[data-testid*="rsvp"], [data-testid*="cta"]');
-  
-  rsvpButtons.forEach(button => {
+  // Only nav/hero CTAs — never form fields (rsvp-name, rsvp-adult-count, etc.)
+  const rsvpButtons = document.querySelectorAll(
+    '[data-testid="nav-rsvp-cta"], [data-testid="hero-cta-rsvp"], [data-testid="hero-cta-details"]'
+  );
+
+  rsvpButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      const testId = button.getAttribute('data-testid');
-      
-      if (testId.includes('rsvp')) {
-        const rsvpSection = document.getElementById('rsvp');
-        if (rsvpSection) {
-          rsvpSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      } else if (testId.includes('details')) {
-        // Scroll to details section
-        const detailsSection = document.getElementById('details');
-        if (detailsSection) {
-          detailsSection.scrollIntoView({ behavior: 'smooth' });
-        }
+      const testId = button.getAttribute('data-testid') || '';
+
+      if (testId.includes('details')) {
+        document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+        return;
       }
+
+      document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 }
