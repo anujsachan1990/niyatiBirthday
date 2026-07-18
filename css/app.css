@@ -528,11 +528,31 @@ html {
 }
 
 body {
-    overflow-x: hidden;
+    /* clip avoids iOS Safari scroll-into-view bugs that overflow-x:hidden causes */
+    overflow-x: clip;
 }
 
 #rsvp {
     scroll-margin-top: var(--rsvp-header-offset);
+}
+
+@media (max-width: 767px) {
+    /* While typing, let the sticky header scroll away so the field can sit above the keyboard */
+    body.rsvp-keyboard-open .site-header {
+        position: relative;
+    }
+
+    .rsvp-input,
+    .rsvp-textarea {
+        scroll-margin-top: 1.25rem;
+        scroll-margin-bottom: 40vh;
+    }
+
+    /* Extra room below the form so the focused field can scroll above the keyboard */
+    body.rsvp-keyboard-open #rsvp {
+        padding-bottom: min(50vh, 22rem);
+        overflow-anchor: none;
+    }
 }
 
 .rsvp-layout {

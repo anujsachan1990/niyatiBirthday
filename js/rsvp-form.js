@@ -2,6 +2,8 @@ function initRSVPForm() {
   const form = document.querySelector('[data-testid="rsvp-form"]');
   if (!form) return;
 
+  initMobileKeyboardScroll(form);
+
   const nameInput = form.querySelector('[data-testid="rsvp-name"]');
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
@@ -248,6 +250,118 @@ function initRSVPForm() {
     if (typeof createConfetti === 'function' && wasAttending) {
       createConfetti();
     }
+  });
+}
+
+/**
+ * Keep focused RSVP fields visible above the mobile keyboard.
+ * One-shot only — no continuous scroll fighting, so the user can still scroll manually.
+ */
+function initMobileKeyboardScroll(form) {
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
+  if (!mobileQuery.matches) return;
+
+  let activeInput = null;
+  let revealDone = false;
+  let revealTimer = null;
+  let blurTimer = null;
+
+  function visibleBand() {
+    const viewport = window.visualViewport;
+    const header = document.querySelector('.site-header');
+    const headerBottom = header?.getBoundingClientRect().bottom ?? 0;
+
+    if (!viewport) {
+      return {
+        top: headerBottom + 12,
+        bottom: window.innerHeight - 16,
+      };
+    }
+
+    return {
+      top: viewport.offsetTop + Math.max(headerBottom - viewport.offsetTop, 0) + 12,
+      bottom: viewport.offsetTop + viewport.height - 16,
+    };
+  }
+
+  function revealFocusedInput() {
+    if (!activeInput || !mobileQuery.matches || revealDone) return;
+
+    const viewport = window.visualViewport;
+    // Wait until the keyboard has actually shrunk the visual viewport
+    if (viewport && viewport.height > window.innerHeight * 0.82) return;
+
+    const rect = activeInput.getBoundingClientRect();
+    const { top, bottom } = visibleBand();
+    const bandHeight = bottom - top;
+
+    if (bandHeight < 120) return;
+
+    const padding = 10;
+    const fullyVisible = rect.top >= top + padding && rect.bottom <= bottom - padding;
+    if (fullyVisible) {
+      revealDone = true;
+      return;
+    }
+
+    // Place the input in the upper-middle of the visible band (above keyboard)
+    const targetY = top + Math.min(bandHeight * 0.35, 120);
+    const delta = rect.top - targetY;
+
+    if (Math.abs(delta) > 6) {
+      window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+    }
+
+    revealDone = true;
+  }
+
+  function scheduleReveal() {
+    window.clearTimeout(revealTimer);
+    // Wait for iOS keyboard / visualViewport to settle, then adjust once
+    revealTimer = window.setTimeout(revealFocusedInput, 280);
+  }
+
+  form.addEventListener(
+    'focusin',
+    (event) => {
+      const input = event.target.closest('input:not([type="hidden"]), textarea');
+      if (!input || !form.contains(input)) return;
+
+      window.clearTimeout(blurTimer);
+      activeInput = input;
+      revealDone = false;
+      document.body.classList.add('rsvp-keyboard-open');
+      scheduleReveal();
+    },
+    true
+  );
+
+  form.addEventListener(
+    'focusout',
+    () => {
+      window.clearTimeout(blurTimer);
+      blurTimer = window.setTimeout(() => {
+        const focused = document.activeElement;
+        if (
+          focused &&
+          form.contains(focused) &&
+          focused.matches('input:not([type="hidden"]), textarea')
+        ) {
+          return;
+        }
+
+        activeInput = null;
+        revealDone = false;
+        window.clearTimeout(revealTimer);
+        document.body.classList.remove('rsvp-keyboard-open');
+      }, 100);
+    },
+    true
+  );
+
+  // Only the first viewport resize after focus (keyboard opening) may trigger a reveal
+  window.visualViewport?.addEventListener('resize', () => {
+    if (activeInput && !revealDone) scheduleReveal();
   });
 }
 
