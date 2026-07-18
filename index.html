@@ -833,34 +833,52 @@
                                     <p class="rsvp-label font-mono-nb text-[11px] uppercase tracking-[0.28em]">Who’s coming with you?</p>
                                     <div class="rsvp-count-grid">
                                         <div class="rsvp-count-group">
-                                            <label class="rsvp-count-label font-heading" for="rsvp-adult-count" id="rsvp-adult-label">Adults</label>
-                                            <select
-                                                id="rsvp-adult-count"
-                                                class="rsvp-select"
-                                                data-testid="rsvp-adult-count"
-                                                aria-labelledby="rsvp-adult-label"
-                                            >
-                                                <option value="1" selected>1 adult</option>
-                                                <option value="2">2 adults</option>
-                                                <option value="3">3 adults</option>
-                                                <option value="4">4 adults</option>
-                                            </select>
+                                            <span class="rsvp-count-label font-heading" id="rsvp-adult-label">Adults</span>
+                                            <div class="rsvp-dropdown" data-rsvp-dropdown data-testid="rsvp-adult-dropdown">
+                                                <button
+                                                    type="button"
+                                                    class="rsvp-dropdown-trigger"
+                                                    data-rsvp-dropdown-trigger
+                                                    data-testid="rsvp-adult-count-trigger"
+                                                    aria-haspopup="listbox"
+                                                    aria-expanded="false"
+                                                    aria-labelledby="rsvp-adult-label"
+                                                >
+                                                    <span data-rsvp-dropdown-label>1 adult</span>
+                                                </button>
+                                                <ul class="rsvp-dropdown-menu" data-rsvp-dropdown-menu role="listbox" hidden>
+                                                    <li role="option" data-value="1" aria-selected="true">1 adult</li>
+                                                    <li role="option" data-value="2" aria-selected="false">2 adults</li>
+                                                    <li role="option" data-value="3" aria-selected="false">3 adults</li>
+                                                    <li role="option" data-value="4" aria-selected="false">4 adults</li>
+                                                </ul>
+                                                <input type="hidden" id="rsvp-adult-count" data-testid="rsvp-adult-count" value="1">
+                                            </div>
                                             <p class="rsvp-count-hint font-mono-nb">Including you</p>
                                         </div>
                                         <div class="rsvp-count-group">
-                                            <label class="rsvp-count-label font-heading" for="rsvp-kid-count" id="rsvp-kid-label">Kids</label>
-                                            <select
-                                                id="rsvp-kid-count"
-                                                class="rsvp-select"
-                                                data-testid="rsvp-kid-count"
-                                                aria-labelledby="rsvp-kid-label"
-                                            >
-                                                <option value="0" selected>No kids</option>
-                                                <option value="1">1 kid</option>
-                                                <option value="2">2 kids</option>
-                                                <option value="3">3 kids</option>
-                                                <option value="4">4 kids</option>
-                                            </select>
+                                            <span class="rsvp-count-label font-heading" id="rsvp-kid-label">Kids</span>
+                                            <div class="rsvp-dropdown" data-rsvp-dropdown data-testid="rsvp-kid-dropdown">
+                                                <button
+                                                    type="button"
+                                                    class="rsvp-dropdown-trigger"
+                                                    data-rsvp-dropdown-trigger
+                                                    data-testid="rsvp-kid-count-trigger"
+                                                    aria-haspopup="listbox"
+                                                    aria-expanded="false"
+                                                    aria-labelledby="rsvp-kid-label"
+                                                >
+                                                    <span data-rsvp-dropdown-label>No kids</span>
+                                                </button>
+                                                <ul class="rsvp-dropdown-menu" data-rsvp-dropdown-menu role="listbox" hidden>
+                                                    <li role="option" data-value="0" aria-selected="true">No kids</li>
+                                                    <li role="option" data-value="1" aria-selected="false">1 kid</li>
+                                                    <li role="option" data-value="2" aria-selected="false">2 kids</li>
+                                                    <li role="option" data-value="3" aria-selected="false">3 kids</li>
+                                                    <li role="option" data-value="4" aria-selected="false">4 kids</li>
+                                                </ul>
+                                                <input type="hidden" id="rsvp-kid-count" data-testid="rsvp-kid-count" value="0">
+                                            </div>
                                             <p class="rsvp-count-hint font-mono-nb">Optional</p>
                                         </div>
                                     </div>

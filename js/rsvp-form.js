@@ -6,16 +6,83 @@ function initRSVPForm() {
   const emailInput = form.querySelector('[data-testid="rsvp-email"]');
   const attendingYes = form.querySelector('[data-testid="rsvp-attending-yes"]');
   const attendingNo = form.querySelector('[data-testid="rsvp-attending-no"]');
-  const adultSelect = form.querySelector('[data-testid="rsvp-adult-count"]');
-  const kidSelect = form.querySelector('[data-testid="rsvp-kid-count"]');
+  const adultCountInput = form.querySelector('[data-testid="rsvp-adult-count"]');
+  const kidCountInput = form.querySelector('[data-testid="rsvp-kid-count"]');
+  const adultDropdown = form.querySelector('[data-testid="rsvp-adult-dropdown"]');
+  const kidDropdown = form.querySelector('[data-testid="rsvp-kid-dropdown"]');
   const guestCountSection = form.querySelector('[data-testid="rsvp-guest-count-section"]');
   const messageInput = form.querySelector('[data-testid="rsvp-message"]');
   const submitButton = form.querySelector('[data-testid="rsvp-submit"]');
 
   let attending = 'yes';
+  let adultCount = 1;
+  let kidCount = 0;
 
   const MAX_ADULT_COUNT = 4;
   const MAX_KID_COUNT = 4;
+
+  function closeAllDropdowns(except) {
+    form.querySelectorAll('[data-rsvp-dropdown].is-open').forEach((dropdown) => {
+      if (dropdown === except) return;
+      setDropdownOpen(dropdown, false);
+    });
+  }
+
+  function setDropdownOpen(dropdown, open) {
+    if (!dropdown) return;
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    const menu = dropdown.querySelector('[data-rsvp-dropdown-menu]');
+    dropdown.classList.toggle('is-open', open);
+    if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (menu) menu.hidden = !open;
+  }
+
+  function setDropdownValue(dropdown, hiddenInput, value) {
+    if (!dropdown || !hiddenInput) return;
+    const options = dropdown.querySelectorAll('[role="option"]');
+    const match = Array.from(options).find((option) => option.dataset.value === String(value));
+    if (!match) return;
+
+    hiddenInput.value = String(value);
+    const label = dropdown.querySelector('[data-rsvp-dropdown-label]');
+    if (label) label.textContent = match.textContent.trim();
+
+    options.forEach((option) => {
+      option.setAttribute('aria-selected', option === match ? 'true' : 'false');
+    });
+  }
+
+  function setDropdownDisabled(dropdown, disabled) {
+    if (!dropdown) return;
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    dropdown.classList.toggle('is-disabled', disabled);
+    if (trigger) trigger.disabled = disabled;
+    if (disabled) setDropdownOpen(dropdown, false);
+  }
+
+  function initDropdown(dropdown, hiddenInput, onChange) {
+    if (!dropdown || !hiddenInput) return;
+
+    const trigger = dropdown.querySelector('[data-rsvp-dropdown-trigger]');
+    const menu = dropdown.querySelector('[data-rsvp-dropdown-menu]');
+    if (!trigger || !menu) return;
+
+    trigger.addEventListener('click', () => {
+      if (trigger.disabled) return;
+      const willOpen = !dropdown.classList.contains('is-open');
+      closeAllDropdowns(dropdown);
+      setDropdownOpen(dropdown, willOpen);
+    });
+
+    menu.addEventListener('click', (event) => {
+      const option = event.target.closest('[role="option"]');
+      if (!option || !menu.contains(option)) return;
+      const value = Number(option.dataset.value);
+      onChange(value);
+      setDropdownOpen(dropdown, false);
+      trigger.focus({ preventScroll: true });
+    });
+  }
 
   function setAttending(value) {
     attending = value;
@@ -33,17 +100,27 @@ function initRSVPForm() {
       guestCountSection.classList.toggle('is-collapsed', value === 'no');
     }
 
-    const disabled = value === 'no';
-    if (adultSelect) adultSelect.disabled = disabled;
-    if (kidSelect) kidSelect.disabled = disabled;
+    setDropdownDisabled(adultDropdown, value === 'no');
+    setDropdownDisabled(kidDropdown, value === 'no');
 
     if (value === 'no') {
-      if (adultSelect) adultSelect.value = '1';
-      if (kidSelect) kidSelect.value = '0';
-    } else if (adultSelect && Number(adultSelect.value) < 1) {
-      adultSelect.value = '1';
-      if (kidSelect) kidSelect.value = '0';
+      adultCount = 0;
+      kidCount = 0;
+      closeAllDropdowns();
+    } else if (adultCount < 1) {
+      setAdultCount(1);
+      setKidCount(0);
     }
+  }
+
+  function setAdultCount(value) {
+    adultCount = Math.min(Math.max(value, 1), MAX_ADULT_COUNT);
+    setDropdownValue(adultDropdown, adultCountInput, adultCount);
+  }
+
+  function setKidCount(value) {
+    kidCount = Math.min(Math.max(value, 0), MAX_KID_COUNT);
+    setDropdownValue(kidDropdown, kidCountInput, kidCount);
   }
 
   function showStatus(message, type) {
@@ -75,7 +152,21 @@ function initRSVPForm() {
   attendingYes?.addEventListener('click', () => setAttending('yes'));
   attendingNo?.addEventListener('click', () => setAttending('no'));
 
+  initDropdown(adultDropdown, adultCountInput, setAdultCount);
+  initDropdown(kidDropdown, kidCountInput, setKidCount);
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-rsvp-dropdown]')) return;
+    closeAllDropdowns();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAllDropdowns();
+  });
+
   setAttending('yes');
+  setAdultCount(1);
+  setKidCount(0);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -83,8 +174,6 @@ function initRSVPForm() {
     const name = nameInput?.value.trim();
     const email = emailInput?.value.trim() || null;
     const message = messageInput?.value.trim() || null;
-    const adultCount = Number(adultSelect?.value || 1);
-    const kidCount = Number(kidSelect?.value || 0);
 
     if (!name) {
       showStatus('Please enter your name.', 'error');
@@ -149,6 +238,8 @@ function initRSVPForm() {
 
     form.reset();
     setAttending('yes');
+    setAdultCount(1);
+    setKidCount(0);
 
     if (typeof createConfetti === 'function' && wasAttending) {
       createConfetti();
