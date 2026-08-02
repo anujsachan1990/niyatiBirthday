@@ -97,6 +97,10 @@
                                 x-source-var="links" x-source-file-abs="/app/frontend/src/components/site/Navbar.jsx"
                                 x-source-line="6" x-source-path="label" x-source-editable="true" x-array-var="links"
                                 x-array-line="6" x-array-item-param="l">Details</button><button
+                                data-testid="nav-menu"
+                                class="font-mono-nb text-xs uppercase tracking-[0.24em] text-[#1F1D1B] hover:text-[#5C564F] relative after:content-[&#39;&#39;] after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-[#2A2A2A] after:transition-[width] after:duration-300 hover:after:w-full"
+                                x-file-name="Navbar" x-line-number="39" x-column="12" x-component="button"
+                                x-id="Navbar_39_12" x-dynamic="false">Food Menu</button><button
                                 data-testid="nav-gallery"
                                 class="font-mono-nb text-xs uppercase tracking-[0.24em] text-[#1F1D1B] hover:text-[#5C564F] relative after:content-[&#39;&#39;] after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-[#2A2A2A] after:transition-[width] after:duration-300 hover:after:w-full"
                                 x-file-name="Navbar" x-line-number="39" x-column="12" x-component="button"
@@ -608,21 +612,35 @@
                                     <p class="font-body text-sm text-[#1F1D1B] leading-relaxed">
                                         <strong>Note:</strong> Please ring <strong>Level 8</strong> on arrival and we will let you in.
                                     </p>
-                                </div><a
-                                    href="https://maps.app.goo.gl/74sTQtzTtHf7cWcW6?g_st=ic"
-                                    target="_blank" rel="noreferrer" data-testid="details-map-link"
-                                    class="inline-flex items-center gap-2 mt-8 nb-border nb-shadow-sm nb-shadow-hover bg-[#F9F6F0] font-mono-nb text-xs uppercase tracking-[0.28em] px-5 py-3 rounded-full"
-                                    x-file-name="Details" x-line-number="85" x-column="12" x-component="a"
-                                    x-id="Details_85_12" x-dynamic="false">Open in Maps <svg
-                                        xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-external-link" aria-hidden="true"
-                                        x-file-name="Details" x-line-number="92" x-column="27"
-                                        x-component="ExternalLink" x-id="Details_92_27" x-dynamic="false">
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M10 14 21 3"></path>
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                    </svg></a><svg class="absolute -right-8 -bottom-8 opacity-40" width="260"
+                                </div><div class="flex flex-wrap items-center gap-3 mt-8">
+                                    <a
+                                        href="https://maps.app.goo.gl/74sTQtzTtHf7cWcW6?g_st=ic"
+                                        target="_blank" rel="noreferrer" data-testid="details-map-link"
+                                        class="inline-flex items-center gap-2 nb-border nb-shadow-sm nb-shadow-hover bg-[#F9F6F0] font-mono-nb text-xs uppercase tracking-[0.28em] px-5 py-3 rounded-full"
+                                        x-file-name="Details" x-line-number="85" x-column="12" x-component="a"
+                                        x-id="Details_85_12" x-dynamic="false">Open in Maps <svg
+                                            xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="lucide lucide-external-link" aria-hidden="true"
+                                            x-file-name="Details" x-line-number="92" x-column="27"
+                                            x-component="ExternalLink" x-id="Details_92_27" x-dynamic="false">
+                                            <path d="M15 3h6v6"></path>
+                                            <path d="M10 14 21 3"></path>
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        </svg></a>
+                                    <button
+                                        data-testid="details-menu-btn"
+                                        class="inline-flex items-center gap-2 nb-border nb-shadow-sm nb-shadow-hover bg-[#1F1D1B] text-[#F9F6F0] font-mono-nb text-xs uppercase tracking-[0.28em] px-5 py-3 rounded-full">
+                                        Food Menu <svg
+                                            xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="lucide lucide-utensils" aria-hidden="true">
+                                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                                            <path d="M7 2v20"></path>
+                                            <path d="M21 15V2v0a5 5 0 0 0-5 5v8c0 1.1.9 2 2 2h3Z"></path>
+                                            <path d="M19 17v5"></path>
+                                        </svg></button>
+                                </div><svg class="absolute -right-8 -bottom-8 opacity-40" width="260"
                                     height="220" viewBox="0 0 260 220" fill="none" aria-hidden="true"
                                     x-file-name="Details" x-line-number="96" x-column="12" x-component="svg"
                                     x-id="Details_96_12" x-dynamic="false">
@@ -774,8 +792,20 @@
                         </div>
                         <div class="rsvp-form-wrap lg:col-span-7" x-file-name="RSVPForm" x-line-number="88" x-column="8"
                             x-component="div" x-id="RSVPForm_88_8" x-dynamic="false">
+                            <div class="mb-10 p-6 bg-[#C1D5C9] nb-border rounded-2xl text-[#1F1D1B] flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-[#F9F6F0] flex items-center justify-center flex-shrink-0 border border-[#2A2A2A]/10 mt-0.5 animate-pulse">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#1F1D1B]">
+                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-heading text-2xl mb-1 leading-snug">Thank you for letting us know!</h4>
+                                    <p class="font-body text-base text-[#1F1D1B]/85">We can't wait to welcome you and celebrate together.</p>
+                                    <p class="font-mono-nb text-[10px] uppercase tracking-[0.24em] mt-3 opacity-60">RSVP Closed on 28 July 2026</p>
+                                </div>
+                            </div>
                             <form data-testid="rsvp-form"
-                                class="rsvp-form nb-border text-[#1F1D1B]">
+                                class="rsvp-form rsvp-form-closed nb-border text-[#1F1D1B]">
                                 <div class="rsvp-form-mobile-header">
                                     <p class="rsvp-form-kicker font-mono-nb">Chapter 03 · RSVP</p>
                                     <h3 class="rsvp-form-title font-heading">Will you be <span class="italic">there</span>?</h3>
@@ -792,7 +822,7 @@
                                             data-testid="rsvp-name" placeholder="Ava Sharma" autocomplete="name"
                                             class="rsvp-input"
                                             x-file-name="RSVPForm" x-line-number="134" x-column="20" x-component="input"
-                                            x-id="RSVPForm_134_20" x-dynamic="false" value=""></div>
+                                            x-id="RSVPForm_134_20" x-dynamic="false" value="" disabled></div>
                                     <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="143" x-column="18" x-component="div"
                                         x-id="RSVPForm_143_18" x-dynamic="true" x-source-type="computed"
                                         x-source-editable="false"><label
@@ -802,7 +832,7 @@
                                             data-testid="rsvp-email" placeholder="you@example.com" autocomplete="email" inputmode="email"
                                             class="rsvp-input"
                                             x-file-name="RSVPForm" x-line-number="145" x-column="20" x-component="input"
-                                            x-id="RSVPForm_145_20" x-dynamic="false" type="email" value=""></div>
+                                            x-id="RSVPForm_145_20" x-dynamic="false" type="email" value="" disabled></div>
                                 </div>
                                 <div class="rsvp-field rsvp-section" x-file-name="RSVPForm" x-line-number="157" x-column="16" x-component="div"
                                     x-id="RSVPForm_157_16" x-dynamic="false"><label
@@ -814,7 +844,7 @@
                                             type="button" data-testid="rsvp-attending-yes"
                                             class="rsvp-attending-btn is-selected"
                                             x-file-name="RSVPForm" x-line-number="160" x-column="20"
-                                            x-component="button" x-id="RSVPForm_160_20" x-dynamic="false">
+                                            x-component="button" x-id="RSVPForm_160_20" x-dynamic="false" disabled>
                                             <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="166"
                                                 x-column="22" x-component="p" x-id="RSVPForm_166_22" x-dynamic="false">
                                                 Yes, joyfully</p>
@@ -824,7 +854,7 @@
                                         </button><button type="button" data-testid="rsvp-attending-no"
                                             class="rsvp-attending-btn"
                                             x-file-name="RSVPForm" x-line-number="169" x-column="20"
-                                            x-component="button" x-id="RSVPForm_169_20" x-dynamic="false">
+                                            x-component="button" x-id="RSVPForm_169_20" x-dynamic="false" disabled>
                                             <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="175"
                                                 x-column="22" x-component="p" x-id="RSVPForm_175_22" x-dynamic="false">
                                                 Regretfully no</p>
@@ -847,6 +877,7 @@
                                                     aria-haspopup="listbox"
                                                     aria-expanded="false"
                                                     aria-labelledby="rsvp-adult-label"
+                                                    disabled
                                                 >
                                                     <span data-rsvp-dropdown-label>1 adult</span>
                                                 </button>
@@ -871,6 +902,7 @@
                                                     aria-haspopup="listbox"
                                                     aria-expanded="false"
                                                     aria-labelledby="rsvp-kid-label"
+                                                    disabled
                                                 >
                                                     <span data-rsvp-dropdown-label>No kids</span>
                                                 </button>
@@ -896,7 +928,7 @@
                                         placeholder="Write a little wish, blessing or memory..."
                                         class="rsvp-input rsvp-textarea"
                                         x-file-name="RSVPForm" x-line-number="207" x-column="18" x-component="textarea"
-                                        x-id="RSVPForm_207_18" x-dynamic="false"></textarea></div>
+                                        x-id="RSVPForm_207_18" x-dynamic="false" disabled></textarea></div>
                                 <div data-testid="rsvp-status-slot" class="rsvp-status-slot" aria-live="polite"></div>
                                 <div class="rsvp-form-footer">
                                 <button type="submit"
@@ -904,16 +936,12 @@
                                     class="rsvp-submit inline-flex items-center gap-2 nb-border nb-shadow bg-[#1F1D1B] text-[#F9F6F0] font-mono-nb text-xs uppercase tracking-[0.28em] px-8 py-4 disabled:opacity-70"
                                     x-file-name="RSVPForm" x-line-number="217" x-column="16" x-component="button"
                                     x-id="RSVPForm_217_16" x-dynamic="true" x-source-type="computed"
-                                    x-source-editable="false">Send my RSVP <svg xmlns="http://www.w3.org/2000/svg"
+                                    x-source-editable="false" disabled>RSVP Closed <svg xmlns="http://www.w3.org/2000/svg"
                                         width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-send" aria-hidden="true" x-file-name="RSVPForm"
-                                        x-line-number="223" x-column="60" x-component="Send" x-id="RSVPForm_223_60"
-                                        x-dynamic="false">
-                                        <path
-                                            d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z">
-                                        </path>
-                                        <path d="m21.854 2.147-10.94 10.939"></path>
+                                        class="lucide lucide-lock" aria-hidden="true">
+                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg></button>
                                 </div>
                             </form>
@@ -1238,6 +1266,22 @@
     -->
 
 
+
+    <!-- Menu Modal -->
+    <div id="menu-modal" class="menu-modal" aria-hidden="true">
+        <div class="menu-modal-overlay"></div>
+        <div class="menu-modal-content">
+            <button id="menu-modal-close" class="menu-modal-close" aria-label="Close menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="menu-modal-image-wrapper">
+                <img src="img/menu.jpg" alt="Niyati's Birthday Food Menu" class="menu-modal-image">
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript for animations and functionality -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

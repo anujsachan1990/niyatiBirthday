@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Niyati's Birthday Menu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121110;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #F9F6F0;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #F5E3B8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 8px 16px;
+            border: 1px solid rgba(245, 227, 184, 0.3);
+            border-radius: 9999px;
+            background-color: rgba(245, 227, 184, 0.05);
+            transition: all 0.2s ease;
+        }
+        .back-link:hover {
+            background-color: rgba(245, 227, 184, 0.15);
+            border-color: #F5E3B8;
+        }
+        .menu-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(245, 227, 184, 0.15);
+        }
+        .hint {
+            margin-top: 16px;
+            font-size: 12px;
+            color: rgba(249, 246, 240, 0.5);
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Site
+            </a>
+        </div>
+        <img class="menu-image" src="img/menu.jpg" alt="Niyati's Birthday Menu - Kesari Special Selection">
+        <p class="hint">Pinch screen to zoom in/out</p>
+    </div>
+</body>
+</html>

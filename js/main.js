@@ -417,6 +417,64 @@ function randomizeGalleryImages() {
 }
 
 // ============================================
+// 11. MENU MODAL CONTROLLER
+// ============================================
+function initMenuModal() {
+  const modal = document.getElementById('menu-modal');
+  const closeBtn = document.getElementById('menu-modal-close');
+  const overlay = modal ? modal.querySelector('.menu-modal-overlay') : null;
+  const menuButtons = document.querySelectorAll('[data-testid="nav-menu"], [data-testid="details-menu-btn"]');
+  
+  if (!modal) return;
+  
+  // Preload the image in the background once the page loads
+  window.addEventListener('load', () => {
+    const img = new Image();
+    img.src = 'img/menu.jpg';
+    console.log('🍽️ Menu image preloaded in background');
+  });
+
+  const openModal = () => {
+    // If opening on a mobile device (viewport width < 768px), open menu.html in a new tab
+    if (window.innerWidth < 768) {
+      window.open('menu.html', '_blank');
+      return;
+    }
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling background
+  };
+
+  const closeModal = () => {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; // Restore scrolling
+  };
+
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', closeModal);
+  }
+
+  // Handle Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
+// ============================================
 // 12. INITIALIZE ALL
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -431,6 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageRotations();
   initParallax();
   initRSVPButtons();
+  initMenuModal();
   // Gallery uses fixed, size-matched images from ./img/
   
   // Optional: Create confetti on page load
