@@ -72,6 +72,7 @@ function writeConfig(dest, url, key) {
 const copyTargets = [
   'index.html',
   'menu.html',
+  'video',
   'favicon.ico',
   'admin',
   'css',
