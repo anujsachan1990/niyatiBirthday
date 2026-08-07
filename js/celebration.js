@@ -1,42 +1,188 @@
 // celebration.js - Canvas-based Birthday Celebration Effects
 // Creates floating balloons, falling confetti, and interactive popping effects.
+// Real-time: no page refresh needed — polls every second for the birthday moment.
 
 (function () {
   // ============================================
   // 1. CONFIGURATION & TIME CHECK
   // ============================================
-  // Niyati's birthday: Aug 7, 2026 at 3:03 PM AEST (UTC+10)
-  // Using explicit UTC equivalent: Aug 7 at 05:03 UTC
-  const TARGET_TIME = new Date('2026-08-07T05:03:00Z'); // 3:03 PM AEST = 05:03 UTC
-  const END_TIME    = new Date('2026-08-09T00:00:00+10:00'); // End of Aug 8 AEST (animations stop Aug 9)
-  const FORCE_CELEBRATION = false; // Set to true to test immediately
-  
-  const urlParams = new URLSearchParams(window.location.search);
+  // Niyati's birthday: Aug 7, 2026 at 3:03 PM AEST (UTC+10) = 05:03 UTC
+  const TARGET_TIME      = new Date('2026-08-07T05:03:00Z');
+  const END_TIME         = new Date('2026-08-09T00:00:00+10:00');
+  const COUNTDOWN_SECS   = 10; // Show countdown for last N seconds before 3:03 PM
+  const FORCE_CELEBRATION = false; // Set true to test immediately (bypasses time window)
+
+  const urlParams        = new URLSearchParams(window.location.search);
   const isCelebrateQuery = urlParams.has('celebrate') || urlParams.has('test');
-  
-  const now = new Date();
-  const isBirthdayTime   = now >= TARGET_TIME;
-  const isWithinWindow   = isBirthdayTime && now < END_TIME;
-  
-  const shouldCelebrate = FORCE_CELEBRATION || isCelebrateQuery || isWithinWindow;
-  
-  // ---- Hero text swap: change "is turning" → "turned" from birthday onwards, permanently ----
-  // This runs regardless of animation window — text stays after Aug 9.
-  if (isBirthdayTime || isCelebrateQuery) {
+
+  // ---- Countdown overlay (DOM element, created once) ----
+  let countdownOverlay = null;
+  let celebrationStarted = false;
+  let pollingInterval = null;
+
+  function createCountdownOverlay() {
+    if (countdownOverlay) return;
+    countdownOverlay = document.createElement('div');
+    countdownOverlay.id = 'birthday-countdown';
+    Object.assign(countdownOverlay.style, {
+      position: 'fixed',
+      inset: '0',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: '99999',
+      pointerEvents: 'none',
+      fontFamily: '"Georgia", serif',
+      background: 'transparent',
+    });
+
+    const numEl = document.createElement('div');
+    numEl.id = 'countdown-number';
+    Object.assign(numEl.style, {
+      fontSize: 'clamp(160px, 30vw, 320px)',
+      fontWeight: '700',
+      lineHeight: '1',
+      background: 'linear-gradient(135deg, #f472b6 0%, #fcd34d 50%, #fb7185 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
+      textShadow: 'none',
+      filter: 'drop-shadow(0 0 40px rgba(244,114,182,0.7))',
+      transition: 'transform 0.15s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
+      transform: 'scale(1)',
+      opacity: '1',
+      userSelect: 'none',
+    });
+
+    const labelEl = document.createElement('div');
+    labelEl.id = 'countdown-label';
+    labelEl.textContent = '🎂 Niyati turns one in…';
+    Object.assign(labelEl.style, {
+      fontSize: 'clamp(18px, 3vw, 32px)',
+      color: '#5C564F',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      fontFamily: '"Georgia", serif',
+      marginBottom: '24px',
+      fontStyle: 'italic',
+      background: 'rgba(249,246,240,0.85)',
+      borderRadius: '999px',
+      padding: '10px 28px',
+      backdropFilter: 'blur(8px)',
+    });
+
+    countdownOverlay.appendChild(labelEl);
+    countdownOverlay.appendChild(numEl);
+    document.body.appendChild(countdownOverlay);
+  }
+
+  function updateCountdownDisplay(n) {
+    if (!countdownOverlay) createCountdownOverlay();
+    const numEl = document.getElementById('countdown-number');
+    if (!numEl) return;
+
+    // Pulse animation: scale down then up for each tick
+    numEl.style.transform = 'scale(0.7)';
+    numEl.style.opacity = '0.6';
+    setTimeout(() => {
+      numEl.textContent = n;
+      numEl.style.transform = 'scale(1.15)';
+      numEl.style.opacity = '1';
+      setTimeout(() => {
+        numEl.style.transform = 'scale(1)';
+      }, 180);
+    }, 100);
+  }
+
+  function removeCountdownOverlay() {
+    if (countdownOverlay) {
+      countdownOverlay.style.transition = 'opacity 0.6s ease';
+      countdownOverlay.style.opacity = '0';
+      setTimeout(() => {
+        countdownOverlay.remove();
+        countdownOverlay = null;
+      }, 700);
+    }
+  }
+
+  // ---- Hero text swap: permanently from birthday onwards ----
+  function swapHeroText() {
     const heroSpan = document.querySelector('[x-id="Hero_61_14"]');
-    if (heroSpan) {
+    if (heroSpan && heroSpan.textContent.trim() === 'is turning') {
       heroSpan.textContent = 'turned';
     }
   }
-  
-  if (!shouldCelebrate) {
-    console.log('📅 Birthday celebration scheduled for August 7th, 3:03 PM AEST.');
-    return;
+
+  // ---- Main poller: checks every second ----
+  function startPoller() {
+    pollingInterval = setInterval(() => {
+      if (celebrationStarted) {
+        clearInterval(pollingInterval);
+        return;
+      }
+
+      const now          = new Date();
+      const msUntil      = TARGET_TIME - now;
+      const secsUntil    = Math.ceil(msUntil / 1000);
+      const isBirthday   = now >= TARGET_TIME;
+      const isWithin     = isBirthday && now < END_TIME;
+
+      // Swap text the moment birthday arrives
+      if (isBirthday) swapHeroText();
+
+      // Show countdown overlay in the final COUNTDOWN_SECS seconds
+      if (secsUntil > 0 && secsUntil <= COUNTDOWN_SECS) {
+        updateCountdownDisplay(secsUntil);
+      }
+
+      // Launch celebration when it's time
+      if (isWithin && !celebrationStarted) {
+        clearInterval(pollingInterval);
+        removeCountdownOverlay();
+        celebrationStarted = true;
+        launchCelebration();
+      }
+
+      // Stop polling after end window
+      if (now >= END_TIME) {
+        clearInterval(pollingInterval);
+        removeCountdownOverlay();
+      }
+    }, 1000);
   }
-  
+
+  // ---- Decide what to do on load ----
+  const nowOnLoad      = new Date();
+  const isBirthdayNow  = nowOnLoad >= TARGET_TIME;
+  const isWithinNow    = isBirthdayNow && nowOnLoad < END_TIME;
+
+  if (isBirthdayNow) swapHeroText();
+
+  if (FORCE_CELEBRATION || isCelebrateQuery) {
+    // Instant launch for testing
+    celebrationStarted = true;
+    // Wrap in small delay so DOM is settled before we start
+    setTimeout(launchCelebration, 50);
+  } else if (isWithinNow) {
+    // Birthday window is already active — launch immediately
+    celebrationStarted = true;
+    setTimeout(launchCelebration, 50);
+  } else if (nowOnLoad < END_TIME) {
+    // Not yet — start live polling
+    console.log('📅 Birthday celebration scheduled for August 7th, 3:03 PM AEST. Watching…');
+    startPoller();
+  } else {
+    // Past end time — do nothing
+    console.log('🎂 Birthday celebration window has ended. Thank you for celebrating!');
+  }
+
+  // ============================================
+  // 2. THE CELEBRATION (deferred — called by poller or immediately)
+  // ============================================
+  function launchCelebration() {
   console.log('🎉 Birthday Celebration Effects Active!');
 
-  
   // Theme Color Palette
   const PALETTE = [
     '#e4c5c4', // Rose
@@ -694,4 +840,6 @@
   
   requestAnimationFrame(loop);
   
+  } // end launchCelebration()
+
 })();
