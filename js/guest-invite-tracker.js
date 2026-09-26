@@ -5,39 +5,6 @@
   var RSVP_OPTIONS = ["Pending", "Attending", "Declined"];
   var TABLE = "guest_invites";
 
-  var SEED_DATA = [
-    { category: "Friends", familyUnit: "Ram family", people: "Ram, Shweta", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Ayush family", people: "Ayush, Ruchi, Ayush’s mom, 1 kid", adults: 3, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Deepankar family", people: "Deepankar, Vinni", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Kritika family", people: "Kritika, Ankur, 1 infant", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Balram family", people: "Balram, Toshi", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Prateek family", people: "Prateek, Shiikha", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Mohit family", people: "Mohit, Swati, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Friends", familyUnit: "Nitesh family", people: "Nitesh, Ptiyanka, Amaira", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Sarah", people: "Sarah", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Jackson family", people: "Jackson, Jackson’s wife, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Tom", people: "Tom", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Ashley family", people: "Ashley, Ashley’s husband, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Jess", people: "Jess", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Kate", people: "Kate", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Michal family", people: "Michal see, Michal wife", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Nikolai", people: "Nikolai", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Jessen family", people: "Jessen, Jessen wife, 1 kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office HESTA", familyUnit: "Jebin family", people: "Jebin, Jebin wife, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Kristina", people: "Kristina", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Don family", people: "Don, Don’s husband, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Luch family", people: "Luch, Camila", adults: 2, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Bennor family", people: "Bennor, Sonia, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Khusboo family", people: "Khusboo, husband, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Saroja family", people: "Saroja, kid", adults: 1, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Shree family", people: "Shree, kid", adults: 1, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Office AKQA", familyUnit: "Ben Lau family", people: "Ben Lau, Ben’s wife, kid", adults: 2, kids: 1, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Business", familyUnit: "Sonu Bal family", people: "Sonu Bal, Bal, Amardeep", adults: 3, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Business", familyUnit: "Deniel", people: "Deniel", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Business", familyUnit: "Rahul", people: "Rahul", adults: 1, kids: 0, invited: false, rsvpStatus: "Pending", notes: "" },
-    { category: "Business", familyUnit: "Kapil family", people: "Kapil, Kapil’s wife, 2 kids", adults: 2, kids: 2, invited: false, rsvpStatus: "Pending", notes: "" }
-  ];
-
   var supabase = null;
   var guests = [];
   var savedIds = [];
@@ -653,22 +620,6 @@
     }
   }
 
-  async function seedIfEmpty() {
-    var seeded = SEED_DATA.map(function (row) {
-      return Object.assign({ id: createId() }, row);
-    });
-
-    guests = seeded;
-    var payload = guests.map(toDbRow);
-    var result = await supabase.from(TABLE).insert(payload);
-    if (result.error) throw result.error;
-
-    savedIds = guests.map(function (row) {
-      return row.id;
-    });
-    dirty = false;
-  }
-
   async function loadGuests() {
     setSaveStatus("Loading guest list…", null);
 
@@ -680,15 +631,14 @@
     if (result.error) throw result.error;
 
     var rows = result.data || [];
-    if (!rows.length) {
-      await seedIfEmpty();
-      setSaveStatus("Loaded starter guest list and saved to database.", "is-ok");
+    guests = rows.map(mapDbRow);
+    savedIds = guests.map(function (row) {
+      return row.id;
+    });
+    dirty = false;
+    if (!guests.length) {
+      setSaveStatus("Guest list is empty. Click '+ Add family' to add guests.", null);
     } else {
-      guests = rows.map(mapDbRow);
-      savedIds = guests.map(function (row) {
-        return row.id;
-      });
-      dirty = false;
       setSaveStatus("Loaded " + guests.length + " families from database.", "is-ok");
     }
 
