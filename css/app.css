@@ -41,6 +41,8 @@
     object-fit: contain;
     pointer-events: none;
     user-select: none;
+    flex-shrink: 0;
+    overflow: visible;
 }
 
 @keyframes logo-balloon-float {
