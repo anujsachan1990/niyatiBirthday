@@ -6,8 +6,8 @@
   // ============================================
   // 1. CONFIGURATION & TIME CHECK
   // ============================================
-  // Prithvi's 3rd birthday: Nov 9, 2026 at 12:00 AM AEST (UTC+10) = Nov 8 14:00 UTC
-  const TARGET_TIME      = new Date('2026-11-08T14:00:00Z');
+  // Prithvi's 3rd birthday: Nov 10, 2026 at 12:00 AM AEST (UTC+10) = Nov 9 14:00 UTC
+  const TARGET_TIME      = new Date('2026-11-09T14:00:00Z');
   const END_TIME         = new Date('2026-11-16T00:00:00+10:00');
   const COUNTDOWN_SECS   = 10; // Show countdown for last N seconds before 3:03 PM
   const FORCE_CELEBRATION = false; // Set true to test immediately (bypasses time window)
@@ -170,7 +170,7 @@
     setTimeout(launchCelebration, 50);
   } else if (nowOnLoad < END_TIME) {
     // Not yet — start live polling
-    console.log('📅 Birthday celebration scheduled for November 9th, 2026. Watching…');
+    console.log('📅 Birthday celebration scheduled for November 10th, 2026. Watching…');
     startPoller();
   } else {
     // Past end time — do nothing
