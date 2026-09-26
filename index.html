@@ -789,20 +789,8 @@
                         </div>
                         <div class="rsvp-form-wrap lg:col-span-7" x-file-name="RSVPForm" x-line-number="88" x-column="8"
                             x-component="div" x-id="RSVPForm_88_8" x-dynamic="false">
-                            <div class="mb-10 p-6 bg-[#7BBDE8] nb-border rounded-2xl text-[#1F1D1B] flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center flex-shrink-0 border border-[#2A2A2A]/10 mt-0.5 animate-pulse">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#1F1D1B]">
-                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-heading text-2xl mb-1 leading-snug">Thank you for letting us know!</h4>
-                                    <p class="font-body text-base text-[#1F1D1B]/85">We can't wait to welcome you and celebrate together.</p>
-                                    <p class="font-mono-nb text-[10px] uppercase tracking-[0.24em] mt-3 opacity-60">RSVP Closed on 1 November 2026</p>
-                                </div>
-                            </div>
                             <form data-testid="rsvp-form"
-                                class="rsvp-form rsvp-form-closed nb-border text-[#1F1D1B]">
+                                class="rsvp-form nb-border text-[#1F1D1B]">
                                 <div class="rsvp-form-mobile-header">
                                     <p class="rsvp-form-kicker font-mono-nb">Chapter 03 · RSVP</p>
                                     <h3 class="rsvp-form-title font-heading">Will you be <span class="italic">there</span>?</h3>
@@ -819,7 +807,7 @@
                                             data-testid="rsvp-name" placeholder="Ava Sharma" autocomplete="name"
                                             class="rsvp-input"
                                             x-file-name="RSVPForm" x-line-number="134" x-column="20" x-component="input"
-                                            x-id="RSVPForm_134_20" x-dynamic="false" value="" disabled></div>
+                                            x-id="RSVPForm_134_20" x-dynamic="false" value=""></div>
                                     <div class="rsvp-field" x-file-name="RSVPForm" x-line-number="143" x-column="18" x-component="div"
                                         x-id="RSVPForm_143_18" x-dynamic="true" x-source-type="computed"
                                         x-source-editable="false"><label
@@ -829,7 +817,7 @@
                                             data-testid="rsvp-email" placeholder="you@example.com" autocomplete="email" inputmode="email"
                                             class="rsvp-input"
                                             x-file-name="RSVPForm" x-line-number="145" x-column="20" x-component="input"
-                                            x-id="RSVPForm_145_20" x-dynamic="false" type="email" value="" disabled></div>
+                                            x-id="RSVPForm_145_20" x-dynamic="false" type="email" value=""></div>
                                 </div>
                                 <div class="rsvp-field rsvp-section" x-file-name="RSVPForm" x-line-number="157" x-column="16" x-component="div"
                                     x-id="RSVPForm_157_16" x-dynamic="false"><label
@@ -841,7 +829,7 @@
                                             type="button" data-testid="rsvp-attending-yes"
                                             class="rsvp-attending-btn is-selected"
                                             x-file-name="RSVPForm" x-line-number="160" x-column="20"
-                                            x-component="button" x-id="RSVPForm_160_20" x-dynamic="false" disabled>
+                                            x-component="button" x-id="RSVPForm_160_20" x-dynamic="false">
                                             <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="166"
                                                 x-column="22" x-component="p" x-id="RSVPForm_166_22" x-dynamic="false">
                                                 Yes, joyfully</p>
@@ -851,7 +839,7 @@
                                         </button><button type="button" data-testid="rsvp-attending-no"
                                             class="rsvp-attending-btn"
                                             x-file-name="RSVPForm" x-line-number="169" x-column="20"
-                                            x-component="button" x-id="RSVPForm_169_20" x-dynamic="false" disabled>
+                                            x-component="button" x-id="RSVPForm_169_20" x-dynamic="false">
                                             <p class="rsvp-attending-title font-heading text-xl sm:text-2xl" x-file-name="RSVPForm" x-line-number="175"
                                                 x-column="22" x-component="p" x-id="RSVPForm_175_22" x-dynamic="false">
                                                 Regretfully no</p>
@@ -874,7 +862,6 @@
                                                     aria-haspopup="listbox"
                                                     aria-expanded="false"
                                                     aria-labelledby="rsvp-adult-label"
-                                                    disabled
                                                 >
                                                     <span data-rsvp-dropdown-label>1 adult</span>
                                                 </button>
@@ -899,7 +886,6 @@
                                                     aria-haspopup="listbox"
                                                     aria-expanded="false"
                                                     aria-labelledby="rsvp-kid-label"
-                                                    disabled
                                                 >
                                                     <span data-rsvp-dropdown-label>No kids</span>
                                                 </button>
@@ -925,7 +911,7 @@
                                         placeholder="Write a little wish, blessing or memory for Prithvi..."
                                         class="rsvp-input rsvp-textarea"
                                         x-file-name="RSVPForm" x-line-number="207" x-column="18" x-component="textarea"
-                                        x-id="RSVPForm_207_18" x-dynamic="false" disabled></textarea></div>
+                                        x-id="RSVPForm_207_18" x-dynamic="false"></textarea></div>
                                 <div data-testid="rsvp-status-slot" class="rsvp-status-slot" aria-live="polite"></div>
                                 <div class="rsvp-form-footer">
                                 <button type="submit"
@@ -933,12 +919,12 @@
                                     class="rsvp-submit inline-flex items-center gap-2 nb-border nb-shadow bg-[#1F1D1B] text-[#EFF6FF] font-mono-nb text-xs uppercase tracking-[0.28em] px-8 py-4 disabled:opacity-70"
                                     x-file-name="RSVPForm" x-line-number="217" x-column="16" x-component="button"
                                     x-id="RSVPForm_217_16" x-dynamic="true" x-source-type="computed"
-                                    x-source-editable="false" disabled>RSVP Closed <svg xmlns="http://www.w3.org/2000/svg"
+                                    x-source-editable="false">Send RSVP <svg xmlns="http://www.w3.org/2000/svg"
                                         width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-lock" aria-hidden="true">
-                                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                        class="lucide lucide-arrow-right" aria-hidden="true">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
                                     </svg></button>
                                 </div>
                             </form>
