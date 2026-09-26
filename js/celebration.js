@@ -6,7 +6,7 @@
   // ============================================
   // 1. CONFIGURATION & TIME CHECK
   // ============================================
-  // Pritvi's 3rd birthday: Nov 9, 2026 at 12:00 AM AEST (UTC+10) = Nov 8 14:00 UTC
+  // Prithvi's 3rd birthday: Nov 9, 2026 at 12:00 AM AEST (UTC+10) = Nov 8 14:00 UTC
   const TARGET_TIME      = new Date('2026-11-08T14:00:00Z');
   const END_TIME         = new Date('2026-11-16T00:00:00+10:00');
   const COUNTDOWN_SECS   = 10; // Show countdown for last N seconds before 3:03 PM
@@ -57,7 +57,7 @@
 
     const labelEl = document.createElement('div');
     labelEl.id = 'countdown-label';
-    labelEl.textContent = '🎂 Pritvi turns three in…';
+    labelEl.textContent = '🎂 Prithvi turns three in…';
     Object.assign(labelEl.style, {
       fontSize: 'clamp(18px, 3vw, 32px)',
       color: '#5C564F',

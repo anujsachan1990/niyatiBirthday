@@ -33,7 +33,7 @@
     const heroDesc = document.querySelector('[x-id="Hero_75_12"]');
     if (heroDesc) {
       heroDesc.textContent =
-        'He made it \u2014 and so did you. Thank you for being there, for the hugs, the laughter, and for making Pritvi\u2019s very third birthday so unforgettably warm.';
+        'He made it \u2014 and so did you. Thank you for being there, for the hugs, the laughter, and for making Prithvi\u2019s very third birthday so unforgettably warm.';
     }
 
     // 4. HERO BUTTONS: Remove "RSVP now", rename "See details" -> "See memories"
@@ -83,7 +83,7 @@
         // Message para 1
         '<p style="max-width:620px;font-size:1.15rem;line-height:1.75;',
         'color:rgba(239,246,255,0.72);margin-bottom:20px;">',
-        'Pritvi\u2019s third birthday was everything we hoped for \u2014 and more \u2014 because of ',
+        'Prithvi\u2019s third birthday was everything we hoped for \u2014 and more \u2014 because of ',
         'the people who filled the room with love. Every smile, every hug, every beautiful ',
         'wish you brought made this day one we will carry in our hearts forever.',
         '</p>',
@@ -91,7 +91,7 @@
         // Message para 2
         '<p style="max-width:560px;font-size:1.05rem;line-height:1.7;',
         'color:rgba(239,246,255,0.55);margin-bottom:48px;">',
-        'From the bottom of our hearts \u2014 <em>thank you</em> for making Pritvi\u2019s very third ',
+        'From the bottom of our hearts \u2014 <em>thank you</em> for making Prithvi\u2019s very third ',
         'chapter so extraordinary. He may not remember it yet, but we will remember ',
         'you being there for the rest of our lives.',
         '</p>',

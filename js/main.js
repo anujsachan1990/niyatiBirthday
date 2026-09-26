@@ -93,7 +93,7 @@ function closeMobileMenu() {
 // 3. COUNTDOWN TIMER
 // ============================================
 function initCountdown() {
-  // Set the target date - Pritvi's 3rd birthday celebration (November 15th, 2026 at 4:00 PM)
+  // Set the target date - Prithvi's 3rd birthday celebration (November 15th, 2026 at 4:00 PM)
   const targetDate = new Date('2026-11-15T16:00:00').getTime();
   
   console.log('Target date:', new Date(targetDate));
