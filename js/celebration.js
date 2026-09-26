@@ -6,9 +6,9 @@
   // ============================================
   // 1. CONFIGURATION & TIME CHECK
   // ============================================
-  // Niyati's birthday: Aug 7, 2026 at 3:03 PM AEST (UTC+10) = 05:03 UTC
-  const TARGET_TIME      = new Date('2026-08-07T05:03:00Z');
-  const END_TIME         = new Date('2026-08-09T00:00:00+10:00');
+  // Pritvi's 3rd birthday: Nov 9, 2026 at 12:00 AM AEST (UTC+10) = Nov 8 14:00 UTC
+  const TARGET_TIME      = new Date('2026-11-08T14:00:00Z');
+  const END_TIME         = new Date('2026-11-16T00:00:00+10:00');
   const COUNTDOWN_SECS   = 10; // Show countdown for last N seconds before 3:03 PM
   const FORCE_CELEBRATION = false; // Set true to test immediately (bypasses time window)
 
@@ -43,12 +43,12 @@
       fontSize: 'clamp(160px, 30vw, 320px)',
       fontWeight: '700',
       lineHeight: '1',
-      background: 'linear-gradient(135deg, #f472b6 0%, #fcd34d 50%, #fb7185 100%)',
+      background: 'linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #38bdf8 100%)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       backgroundClip: 'text',
       textShadow: 'none',
-      filter: 'drop-shadow(0 0 40px rgba(244,114,182,0.7))',
+      filter: 'drop-shadow(0 0 40px rgba(96,165,250,0.7))',
       transition: 'transform 0.15s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
       transform: 'scale(1)',
       opacity: '1',
@@ -57,7 +57,7 @@
 
     const labelEl = document.createElement('div');
     labelEl.id = 'countdown-label';
-    labelEl.textContent = '🎂 Niyati turns one in…';
+    labelEl.textContent = '🎂 Pritvi turns three in…';
     Object.assign(labelEl.style, {
       fontSize: 'clamp(18px, 3vw, 32px)',
       color: '#5C564F',
@@ -66,7 +66,7 @@
       fontFamily: '"Georgia", serif',
       marginBottom: '24px',
       fontStyle: 'italic',
-      background: 'rgba(249,246,240,0.85)',
+      background: 'rgba(239,246,255,0.85)',
       borderRadius: '999px',
       padding: '10px 28px',
       backdropFilter: 'blur(8px)',
@@ -170,7 +170,7 @@
     setTimeout(launchCelebration, 50);
   } else if (nowOnLoad < END_TIME) {
     // Not yet — start live polling
-    console.log('📅 Birthday celebration scheduled for August 7th, 3:03 PM AEST. Watching…');
+    console.log('📅 Birthday celebration scheduled for November 9th, 2026. Watching…');
     startPoller();
   } else {
     // Past end time — do nothing

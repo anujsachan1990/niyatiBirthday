@@ -93,8 +93,8 @@ function closeMobileMenu() {
 // 3. COUNTDOWN TIMER
 // ============================================
 function initCountdown() {
-  // Set the target date - Niyati's birthday (August 8th, 2026 at 4:30 PM)
-  const targetDate = new Date('2026-08-08T16:30:00').getTime();
+  // Set the target date - Pritvi's 3rd birthday celebration (November 15th, 2026 at 4:00 PM)
+  const targetDate = new Date('2026-11-15T16:00:00').getTime();
   
   console.log('Target date:', new Date(targetDate));
   console.log('Current date:', new Date());
@@ -330,7 +330,7 @@ function initRSVPButtons() {
 // 10. CONFETTI EFFECT (Optional enhancement)
 // ============================================
 function createConfetti() {
-  const colors = ['#E4C5C4', '#C1D5C9', '#F5E3B8', '#C4DAE8'];
+  const colors = ['#A8D4F5', '#7BBDE8', '#F5E3B8', '#B5D8F5'];
   const confettiCount = 50;
   
   for (let i = 0; i < confettiCount; i++) {

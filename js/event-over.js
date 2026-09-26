@@ -8,7 +8,7 @@
   // ================================================
   //  MASTER FLAG -- flip this to toggle everything
   // ================================================
-  const EVENT_OVER = true;
+  const EVENT_OVER = false;
 
   if (!EVENT_OVER) return; // Nothing to do -- site renders normally
 
@@ -17,7 +17,7 @@
 
   function applyEventOverChanges() {
 
-    // 1. HERO BADGE: "You're Invited · 8th Aug 2026" -> thank-you badge
+    // 1. HERO BADGE: "You're Invited · 15th Nov 2026" -> thank-you badge
     const heroBadge = document.querySelector('[x-id="Hero_51_14"]');
     if (heroBadge) {
       heroBadge.textContent = 'Thank you \u00b7 What a beautiful day';
@@ -33,7 +33,7 @@
     const heroDesc = document.querySelector('[x-id="Hero_75_12"]');
     if (heroDesc) {
       heroDesc.textContent =
-        'She made it \u2014 and so did you. Thank you for being there, for the hugs, the laughter, and for making Niyati\u2019s very first birthday so unforgettably warm.';
+        'He made it \u2014 and so did you. Thank you for being there, for the hugs, the laughter, and for making Pritvi\u2019s very third birthday so unforgettably warm.';
     }
 
     // 4. HERO BUTTONS: Remove "RSVP now", rename "See details" -> "See memories"
@@ -64,35 +64,35 @@
 
         // Decorative icon
         '<div style="width:72px;height:72px;border-radius:50%;',
-        'background:linear-gradient(135deg,#f472b6,#fcd34d);',
+        'background:linear-gradient(135deg,#60a5fa,#93c5fd);',
         'display:flex;align-items:center;justify-content:center;',
         'margin-bottom:28px;font-size:34px;flex-shrink:0;">\u{1F382}</div>',
 
         // Chapter label
         '<p style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;',
-        'color:#C1D5C9;margin-bottom:16px;font-family:monospace;">',
+        'color:#7BBDE8;margin-bottom:16px;font-family:monospace;">',
         'Chapter 03 \u00b7 With Gratitude</p>',
 
         // Headline
         '<h2 style="font-size:clamp(40px,8vw,96px);line-height:0.95;',
-        'margin:0 0 32px;color:#F9F6F0;font-family:Georgia,serif;font-weight:400;">',
+        'margin:0 0 32px;color:#EFF6FF;font-family:Georgia,serif;font-weight:400;">',
         'Thank you for<br>',
         '<span style="font-style:italic;color:#F5E3B8;">being there.</span>',
         '</h2>',
 
         // Message para 1
         '<p style="max-width:620px;font-size:1.15rem;line-height:1.75;',
-        'color:rgba(249,246,240,0.72);margin-bottom:20px;">',
-        'Niyati\u2019s first birthday was everything we hoped for \u2014 and more \u2014 because of ',
+        'color:rgba(239,246,255,0.72);margin-bottom:20px;">',
+        'Pritvi\u2019s third birthday was everything we hoped for \u2014 and more \u2014 because of ',
         'the people who filled the room with love. Every smile, every hug, every beautiful ',
         'wish you brought made this day one we will carry in our hearts forever.',
         '</p>',
 
         // Message para 2
         '<p style="max-width:560px;font-size:1.05rem;line-height:1.7;',
-        'color:rgba(249,246,240,0.55);margin-bottom:48px;">',
-        'From the bottom of our hearts \u2014 <em>thank you</em> for making Niyati\u2019s very first ',
-        'chapter so extraordinary. She may not remember it yet, but we will remember ',
+        'color:rgba(239,246,255,0.55);margin-bottom:48px;">',
+        'From the bottom of our hearts \u2014 <em>thank you</em> for making Pritvi\u2019s very third ',
+        'chapter so extraordinary. He may not remember it yet, but we will remember ',
         'you being there for the rest of our lives.',
         '</p>',
 
@@ -101,9 +101,9 @@
 
         // Signature
         '<p style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;',
-        'color:#C1D5C9;margin-bottom:12px;font-family:monospace;">With all our love</p>',
-        '<p style="font-family:Georgia,serif;font-size:2.8rem;color:#F9F6F0;font-weight:400;">',
-        'The Sachan Family</p>',
+        'color:#7BBDE8;margin-bottom:12px;font-family:monospace;">With all our love</p>',
+        '<p style="font-family:Georgia,serif;font-size:2.8rem;color:#EFF6FF;font-weight:400;">',
+        'The Kala Family</p>',
 
         '</div>'
       ].join('');

@@ -1345,7 +1345,7 @@ video {
   border-color: rgb(42 42 42 / 0.2);
 }
 .border-\[\#F9F6F0\]\/20 {
-  border-color: rgb(249 246 240 / 0.2);
+  border-color: rgb(239 246 255 / 0.2);
 }
 .border-l-transparent {
   border-left-color: transparent;
@@ -1408,7 +1408,7 @@ video {
 }
 .bg-\[\#C1D5C9\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(193 213 201 / var(--tw-bg-opacity, 1));
+  background-color: rgb(123 189 232 / var(--tw-bg-opacity, 1));
 }
 .bg-\[\#C4DAE8\] {
   --tw-bg-opacity: 1;
@@ -1416,7 +1416,7 @@ video {
 }
 .bg-\[\#E4C5C4\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(228 197 196 / var(--tw-bg-opacity, 1));
+  background-color: rgb(168 212 245 / var(--tw-bg-opacity, 1));
 }
 .bg-\[\#F5E3B8\] {
   --tw-bg-opacity: 1;
@@ -1424,20 +1424,20 @@ video {
 }
 .bg-\[\#F9F6F0\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 246 240 / var(--tw-bg-opacity, 1));
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
 }
 .bg-white\/60 {
   background-color: rgb(255 255 255 / 0.6);
 }
 .bg-\[\#F9F6F0\]\/80 {
-  background-color: rgb(249 246 240 / 0.8);
+  background-color: rgb(239 246 255 / 0.8);
 }
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 .bg-\[\#F9F6F0\]\/85 {
-  background-color: rgb(249 246 240 / 0.85);
+  background-color: rgb(239 246 255 / 0.85);
 }
 .fill-current {
   fill: currentColor;
@@ -1769,25 +1769,25 @@ video {
 }
 .text-\[\#F9F6F0\] {
   --tw-text-opacity: 1;
-  color: rgb(249 246 240 / var(--tw-text-opacity, 1));
+  color: rgb(239 246 255 / var(--tw-text-opacity, 1));
 }
 .text-\[\#C1D5C9\] {
   --tw-text-opacity: 1;
-  color: rgb(193 213 201 / var(--tw-text-opacity, 1));
+  color: rgb(123 189 232 / var(--tw-text-opacity, 1));
 }
 .text-\[\#F5E3B8\] {
   --tw-text-opacity: 1;
   color: rgb(245 227 184 / var(--tw-text-opacity, 1));
 }
 .text-\[\#F9F6F0\]\/70 {
-  color: rgb(249 246 240 / 0.7);
+  color: rgb(239 246 255 / 0.7);
 }
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity, 1));
 }
 .text-\[\#F9F6F0\]\/60 {
-  color: rgb(249 246 240 / 0.6);
+  color: rgb(239 246 255 / 0.6);
 }
 .underline-offset-4 {
   text-underline-offset: 4px;
@@ -1956,7 +1956,7 @@ video {
 }
 
 :root {
-    --nb-bg: #f9f6f0;
+    --nb-bg: #eff6ff;
     --nb-ink: #1f1d1b;
     --nb-ink-2: #5c564f;
     --nb-border: #2a2a2a;

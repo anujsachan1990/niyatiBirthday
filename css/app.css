@@ -269,7 +269,7 @@
     border-radius: 9999px;
     background-color: #1f1d1b;
     box-shadow: 2px 2px 0 0 var(--nb-border, #2a2a2a);
-    color: #f9f6f0;
+    color: #eff6ff;
     font-family: inherit;
     font-size: 0.6875rem;
     font-weight: 600;
@@ -1001,7 +1001,7 @@ body {
     .rsvp-form {
         padding: 2.5rem;
         gap: 0;
-        background: #f9f6f0;
+        background: #eff6ff;
         box-shadow: 6px 6px 0 #2a2a2a;
     }
 
@@ -1150,7 +1150,7 @@ body {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #5c564f;
-    background: #f9f6f0;
+    background: #eff6ff;
     border-bottom: 1px solid rgba(31, 29, 27, 0.08);
 }
 
@@ -1264,7 +1264,7 @@ body {
     right: 0;
     background: rgba(31, 29, 27, 0.8);
     border: 1px solid rgba(245, 227, 184, 0.2);
-    color: #F9F6F0;
+    color: #EFF6FF;
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 50%;
@@ -1340,4 +1340,43 @@ body {
 
 .rsvp-form-closed * {
     pointer-events: none !important;
+}
+
+/* ============================================
+   BOY THEME OVERRIDES — Pritvi Edition
+   Replaces pinkish palette with cool blues
+   ============================================ */
+
+/* Page background — cool light blue instead of warm cream */
+.bg-\[\#EFF6FF\] { background-color: #EFF6FF !important; }
+.bg-\[\#EFF6FF\]\/80 { background-color: rgba(239,246,255,0.80) !important; }
+.bg-\[\#EFF6FF\]\/60 { background-color: rgba(239,246,255,0.60) !important; }
+.bg-\[\#EFF6FF\]\/65 { background-color: rgba(239,246,255,0.65) !important; }
+.text-\[\#EFF6FF\] { color: #EFF6FF !important; }
+.text-\[\#EFF6FF\]\/70 { color: rgba(239,246,255,0.70) !important; }
+.text-\[\#EFF6FF\]\/60 { color: rgba(239,246,255,0.60) !important; }
+
+/* Boy blue — replaces old pink #E4C5C4 */
+.bg-\[\#A8D4F5\] { background-color: #A8D4F5 !important; }
+
+/* Steely blue — replaces old muted green #C1D5C9 */
+.bg-\[\#7BBDE8\] { background-color: #7BBDE8 !important; }
+.text-\[\#7BBDE8\] { color: #7BBDE8 !important; }
+
+/* Marquee and countdown secondary blue */
+.bg-\[\#B5D8F5\] { background-color: #B5D8F5 !important; }
+
+/* Override the CSS variable for paper grain & default bg */
+:root {
+  --nb-bg: #EFF6FF;
+}
+
+/* Override body and html background */
+body, html {
+  background-color: #EFF6FF;
+}
+
+/* Override paper-grain section background */
+.paper-grain {
+  background-color: #EFF6FF;
 }
